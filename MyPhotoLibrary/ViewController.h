@@ -8,7 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
+
+@property (nonatomic, strong) NSArray *assetGroupArray;
+@property (nonatomic, strong) IBOutlet UITableView *assetGroupTableView;
+@property (nonatomic, strong) NSURL *selectedGroupURL;
+
+- (void)setUp;
 
 
 @end
