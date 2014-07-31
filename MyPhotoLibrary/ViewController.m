@@ -12,6 +12,8 @@
 
 #import "ViewController.h"
 #import "RBLibraryTableViewCell.h"
+#import "RBGroupViewController.h"
+#import "PasswordViewController.h"
 
 #define kGroupLabelText @"groupLabelText"
 #define kGroupInfoText @"groupInfoText"
@@ -20,6 +22,7 @@
 
 @interface ViewController ()
 @property (strong, nonatomic) IBOutlet UILabel *label;
+@property (nonatomic, strong) UITextField *passText;
 
 @end
 
@@ -27,10 +30,10 @@
             
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    self.title = @"Albums";
     
-    [self setTitle:@"Collections"];
     [self setUp];
-    
     // TouchId calls to authenticate.
     // needs switch to handle return error codes
     /*
@@ -76,10 +79,48 @@
         
     
         NSLog(@"error getting authentication %@", authError.description);
-        [self setUp]; // for now
+        // get password manually
+        
+         SecondViewController *secondViewController =
+         [self.storyboard instantiateViewControllerWithIdentifier:@"secondViewController"];
+         [self presentModalViewController:secondViewController animated:YES];
+         
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        PasswordViewController *passVC = (PasswordViewController*)[storyboard instantiateViewControllerWithIdentifier:@"passwordStory"];
+        [self presentViewController:passVC animated:YES completion:^{
+            [self setUp];
+        }];
+
+        //[self setUp]; // for now
         // Could not evaluate policy; look at authError and present an appropriate message to user
+     
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"TouchId not enabled"
+                                                        message:@"Please enter password"
+                                                       delegate:(id)self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"OK", nil];
+        alert.alertViewStyle = UIAlertViewStyleSecureTextInput;
+        
+        _passText = [alert textFieldAtIndex:0];
+        _passText.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _passText.keyboardAppearance = UIKeyboardTypeDecimalPad;
+        [alert show];
     }
-     */
+    */
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex==1)//OK button
+    {
+        NSLog(@"Password: %@", _passText.text);
+        if ([_passText.text isEqual:@"1234"]) {
+            [self setUp];
+        }
+        else {
+            NSLog(@"password incorrect");
+            // do more stuff
+        }
+    }
 }
 
 - (void)setUp
@@ -103,7 +144,7 @@
             [group valueForProperty:ALAssetsGroupPropertyURL];
             
             NSString *groupLabelText =
-            [NSString stringWithFormat:@"%@ (%d)",groupName, numAssets];
+            [NSString stringWithFormat:@"%@ (%lu)",groupName, (unsigned long)numAssets];
             
             UIImage *posterImage =
             [UIImage imageWithCGImage:[group posterImage]];
@@ -195,6 +236,33 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+#pragma mark - Segue
+- (void)prepareForSegue:(UIStoryboardSegue *)segue
+                 sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"GroupView"])
+    {
+        NSIndexPath *indexPath =
+        [_assetGroupTableView indexPathForSelectedRow];
+        
+        NSDictionary *selectedDict =
+        [_assetGroupArray objectAtIndex:indexPath.row];
+        
+        [self setSelectedGroupURL:
+         [selectedDict objectForKey:kGroupURL]];
+        
+        RBGroupViewController *groupVC =
+        segue.destinationViewController;
+        
+        [groupVC setAssetGroupURL:[self selectedGroupURL]];
+        
+        [groupVC setAssetGroupName:
+         [selectedDict objectForKey:kGroupLabelText]];
+        
+        [_assetGroupTableView
+         deselectRowAtIndexPath:indexPath animated:NO];
+    }
 }
 
 

@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C05E2371985C10D008C33E2 /* RBGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C05E2361985C10D008C33E2 /* RBGroupViewController.m */; };
+		3C064F8B19885DD0003BA399 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C064F8A19885DD0003BA399 /* CoreData.framework */; };
+		3C064F9019885EDB003BA399 /* CoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C064F8F19885EDB003BA399 /* CoreDataHelper.m */; };
+		3C064F9319888B79003BA399 /* RBGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C064F9219888B79003BA399 /* RBGroupTableViewCell.m */; };
+		3C18B363198702CB00EAA012 /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C18B362198702CB00EAA012 /* PasswordViewController.m */; };
+		3C18B36519872F6D00EAA012 /* password_test.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C18B36419872F6D00EAA012 /* password_test.png */; };
 		3C67D6DD19846BF40043213D /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C67D6DC19846BF40043213D /* AssetsLibrary.framework */; };
 		3C67D6E019847FCF0043213D /* RBLibraryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C67D6DF19847FCF0043213D /* RBLibraryTableViewCell.m */; };
 		3CAEBE3E1983457800E4002C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE3D1983457800E4002C /* main.m */; };
@@ -15,6 +21,13 @@
 		3CAEBE471983457800E4002C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CAEBE451983457800E4002C /* Main.storyboard */; };
 		3CAEBE491983457800E4002C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CAEBE481983457800E4002C /* Images.xcassets */; };
 		3CAEBE551983457800E4002C /* MyPhotoLibraryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE541983457800E4002C /* MyPhotoLibraryTests.m */; };
+		3CFA3C9C19896432005224F2 /* RBDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFA3C9B19896432005224F2 /* RBDetailViewController.m */; };
+		3CFA3CA01989B320005224F2 /* MyPhoto.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3CFA3C9E1989B320005224F2 /* MyPhoto.xcdatamodeld */; };
+		3CFA3CA21989BAFC005224F2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CFA3CA11989BAFC005224F2 /* CoreGraphics.framework */; };
+		3CFA3CA61989C24F005224F2 /* CoreDataBaseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFA3CA51989C24F005224F2 /* CoreDataBaseVC.m */; };
+		3CFA3CA91989CD46005224F2 /* Photos.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFA3CA81989CD46005224F2 /* Photos.m */; };
+		3CFA3CAC1989CD46005224F2 /* Folders.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFA3CAB1989CD46005224F2 /* Folders.m */; };
+		3CFA3CAF1989D283005224F2 /* CoreDataGroupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFA3CAE1989D283005224F2 /* CoreDataGroupVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +41,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3C05E2351985C10D008C33E2 /* RBGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RBGroupViewController.h; sourceTree = "<group>"; };
+		3C05E2361985C10D008C33E2 /* RBGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RBGroupViewController.m; sourceTree = "<group>"; };
+		3C064F8A19885DD0003BA399 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		3C064F8E19885EDB003BA399 /* CoreDataHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataHelper.h; sourceTree = "<group>"; };
+		3C064F8F19885EDB003BA399 /* CoreDataHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataHelper.m; sourceTree = "<group>"; };
+		3C064F9119888B79003BA399 /* RBGroupTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RBGroupTableViewCell.h; sourceTree = "<group>"; };
+		3C064F9219888B79003BA399 /* RBGroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RBGroupTableViewCell.m; sourceTree = "<group>"; };
+		3C18B361198702CB00EAA012 /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
+		3C18B362198702CB00EAA012 /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
+		3C18B36419872F6D00EAA012 /* password_test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = password_test.png; path = ../../../../Desktop/password_test.png; sourceTree = "<group>"; };
 		3C67D6DC19846BF40043213D /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		3C67D6DE19847FCF0043213D /* RBLibraryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RBLibraryTableViewCell.h; sourceTree = "<group>"; };
 		3C67D6DF19847FCF0043213D /* RBLibraryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RBLibraryTableViewCell.m; sourceTree = "<group>"; };
@@ -44,6 +67,18 @@
 		3CAEBE531983457800E4002C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3CAEBE541983457800E4002C /* MyPhotoLibraryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyPhotoLibraryTests.m; sourceTree = "<group>"; };
 		3CAEBE5E198345C700E4002C /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		3CFA3C9A19896432005224F2 /* RBDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RBDetailViewController.h; sourceTree = "<group>"; };
+		3CFA3C9B19896432005224F2 /* RBDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RBDetailViewController.m; sourceTree = "<group>"; };
+		3CFA3C9F1989B320005224F2 /* MyPhoto.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyPhoto.xcdatamodel; sourceTree = "<group>"; };
+		3CFA3CA11989BAFC005224F2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		3CFA3CA41989C24F005224F2 /* CoreDataBaseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataBaseVC.h; sourceTree = "<group>"; };
+		3CFA3CA51989C24F005224F2 /* CoreDataBaseVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataBaseVC.m; sourceTree = "<group>"; };
+		3CFA3CA71989CD46005224F2 /* Photos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photos.h; sourceTree = "<group>"; };
+		3CFA3CA81989CD46005224F2 /* Photos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photos.m; sourceTree = "<group>"; };
+		3CFA3CAA1989CD46005224F2 /* Folders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Folders.h; sourceTree = "<group>"; };
+		3CFA3CAB1989CD46005224F2 /* Folders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Folders.m; sourceTree = "<group>"; };
+		3CFA3CAD1989D283005224F2 /* CoreDataGroupVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataGroupVC.h; sourceTree = "<group>"; };
+		3CFA3CAE1989D283005224F2 /* CoreDataGroupVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataGroupVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +86,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CFA3CA21989BAFC005224F2 /* CoreGraphics.framework in Frameworks */,
+				3C064F8B19885DD0003BA399 /* CoreData.framework in Frameworks */,
 				3C67D6DD19846BF40043213D /* AssetsLibrary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -65,9 +102,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3C064F8D19885E2C003BA399 /* Core Data Classes */ = {
+			isa = PBXGroup;
+			children = (
+				3C064F8E19885EDB003BA399 /* CoreDataHelper.h */,
+				3C064F8F19885EDB003BA399 /* CoreDataHelper.m */,
+				3CFA3C9E1989B320005224F2 /* MyPhoto.xcdatamodeld */,
+				3CFA3CAA1989CD46005224F2 /* Folders.h */,
+				3CFA3CAB1989CD46005224F2 /* Folders.m */,
+				3CFA3CA71989CD46005224F2 /* Photos.h */,
+				3CFA3CA81989CD46005224F2 /* Photos.m */,
+			);
+			name = "Core Data Classes";
+			sourceTree = "<group>";
+		};
 		3CAEBE2F1983457700E4002C = {
 			isa = PBXGroup;
 			children = (
+				3CFA3CA11989BAFC005224F2 /* CoreGraphics.framework */,
+				3C064F8A19885DD0003BA399 /* CoreData.framework */,
 				3C67D6DC19846BF40043213D /* AssetsLibrary.framework */,
 				3CAEBE5E198345C700E4002C /* LocalAuthentication.framework */,
 				3CAEBE3A1983457800E4002C /* MyPhotoLibrary */,
@@ -88,6 +141,10 @@
 		3CAEBE3A1983457800E4002C /* MyPhotoLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				3CFA3CA31989C1D8005224F2 /* CoreData ViewControllers */,
+				3CFA3C9D19896451005224F2 /* Other */,
+				3C064F8D19885E2C003BA399 /* Core Data Classes */,
+				3C18B36419872F6D00EAA012 /* password_test.png */,
 				3CAEBE3F1983457800E4002C /* AppDelegate.h */,
 				3CAEBE401983457800E4002C /* AppDelegate.m */,
 				3CAEBE421983457800E4002C /* ViewController.h */,
@@ -97,6 +154,12 @@
 				3CAEBE3B1983457800E4002C /* Supporting Files */,
 				3C67D6DE19847FCF0043213D /* RBLibraryTableViewCell.h */,
 				3C67D6DF19847FCF0043213D /* RBLibraryTableViewCell.m */,
+				3C05E2351985C10D008C33E2 /* RBGroupViewController.h */,
+				3C05E2361985C10D008C33E2 /* RBGroupViewController.m */,
+				3C064F9119888B79003BA399 /* RBGroupTableViewCell.h */,
+				3C064F9219888B79003BA399 /* RBGroupTableViewCell.m */,
+				3CFA3C9A19896432005224F2 /* RBDetailViewController.h */,
+				3CFA3C9B19896432005224F2 /* RBDetailViewController.m */,
 			);
 			path = MyPhotoLibrary;
 			sourceTree = "<group>";
@@ -125,6 +188,26 @@
 				3CAEBE531983457800E4002C /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3CFA3C9D19896451005224F2 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				3C18B362198702CB00EAA012 /* PasswordViewController.m */,
+				3C18B361198702CB00EAA012 /* PasswordViewController.h */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
+		3CFA3CA31989C1D8005224F2 /* CoreData ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				3CFA3CA41989C24F005224F2 /* CoreDataBaseVC.h */,
+				3CFA3CA51989C24F005224F2 /* CoreDataBaseVC.m */,
+				3CFA3CAD1989D283005224F2 /* CoreDataGroupVC.h */,
+				3CFA3CAE1989D283005224F2 /* CoreDataGroupVC.m */,
+			);
+			name = "CoreData ViewControllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -208,6 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CAEBE471983457800E4002C /* Main.storyboard in Resources */,
+				3C18B36519872F6D00EAA012 /* password_test.png in Resources */,
 				3CAEBE491983457800E4002C /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -227,9 +311,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CAEBE441983457800E4002C /* ViewController.m in Sources */,
+				3CFA3C9C19896432005224F2 /* RBDetailViewController.m in Sources */,
+				3CFA3CA01989B320005224F2 /* MyPhoto.xcdatamodeld in Sources */,
 				3CAEBE411983457800E4002C /* AppDelegate.m in Sources */,
+				3CFA3CAC1989CD46005224F2 /* Folders.m in Sources */,
+				3CFA3CAF1989D283005224F2 /* CoreDataGroupVC.m in Sources */,
+				3CFA3CA91989CD46005224F2 /* Photos.m in Sources */,
 				3CAEBE3E1983457800E4002C /* main.m in Sources */,
+				3CFA3CA61989C24F005224F2 /* CoreDataBaseVC.m in Sources */,
+				3C05E2371985C10D008C33E2 /* RBGroupViewController.m in Sources */,
 				3C67D6E019847FCF0043213D /* RBLibraryTableViewCell.m in Sources */,
+				3C064F9319888B79003BA399 /* RBGroupTableViewCell.m in Sources */,
+				3C18B363198702CB00EAA012 /* PasswordViewController.m in Sources */,
+				3C064F9019885EDB003BA399 /* CoreDataHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,10 +438,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = MyPhotoLibrary/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -356,10 +453,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = MyPhotoLibrary/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -428,6 +527,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		3CFA3C9E1989B320005224F2 /* MyPhoto.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3CFA3C9F1989B320005224F2 /* MyPhoto.xcdatamodel */,
+			);
+			currentVersion = 3CFA3C9F1989B320005224F2 /* MyPhoto.xcdatamodel */;
+			path = MyPhoto.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3CAEBE301983457800E4002C /* Project object */;
 }
