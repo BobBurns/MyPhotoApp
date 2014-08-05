@@ -9,14 +9,20 @@
 #import "CoreDataBaseVC.h"
 #import "AppDelegate.h"
 #import "CoreDataGroupVC.h"
+#import "CoreDataGroupTVC.h"
+#import "Photos.h"
+#import "Folders.h"
 
 #define debug 1
 
 @interface CoreDataBaseVC ()
 
+
+
 @end
 
 @implementation CoreDataBaseVC
+
 
 #define debug 1
 
@@ -41,7 +47,9 @@
 }
 
 
-
+- (void)doNothing {
+    
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -51,43 +59,11 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    if (debug==1) {
-        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
-    }
-    return [[self.frc sections] count];
-}
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    if (debug==1) {
-        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
-    }
-    return [[self.frc.sections objectAtIndex:section] numberOfObjects];
-}
+
+
 // missed this
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
-{
-    if (debug==1) {
-        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
-    }
-    return [self.frc sectionForSectionIndexTitle:title atIndex:index];
-}
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    if (debug == 1) {
-        NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
-    }
-    return [[[self.frc sections] objectAtIndex:section] name];
-}
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-{
-    if (debug==1) {
-        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
-    }
-    return [self.frc sectionIndexTitles];
-}
+
 #pragma mark - DELEGATE: NSFetchedResultsController
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
@@ -95,14 +71,14 @@
     if (debug==1) {
         NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
     }
-    [self.tableView beginUpdates];
+   [self.tableView beginUpdates];
 }
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     if (debug==1) {
         NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
     }
-    [self.tableView endUpdates];
+   [self.tableView endUpdates];
 }
 - (void)controller:(NSFetchedResultsController *)controller
   didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo
@@ -162,16 +138,32 @@
     }
     CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
     
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Folders"];
+    /*
+    NSFetchRequest *folderRequest = [NSFetchRequest fetchRequestWithEntityName:@"Folders"];
+    folderRequest.sortDescriptors = [NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"name"
+                                                                                            ascending:YES],
+                                     nil];
+    
+    //NSPredicate *folderPredicate = [NSPredicate predicateWithFormat:@"name == 'defaultFolder'"];
+    //[folderRequest setPredicate:folderPredicate];
+    
+    NSFetchedResultsController *folderFetch = [[NSFetchedResultsController alloc] initWithFetchRequest:folderRequest
+                                                                                  managedObjectContext:cdh.context
+                                                                                    sectionNameKeyPath:nil
+                                                                                             cacheName:nil];
+    */
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photos"];
     
     request.sortDescriptors = [NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"date"
                                                              ascending:YES], nil];
+    //NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photoAlbum = '%@'", folderFetch];
+    //[request setPredicate:predicate];
     
     [request setFetchBatchSize:50];
     
     self.frc = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                    managedObjectContext:cdh.context
-                                                     sectionNameKeyPath:@"name"
+                                                     sectionNameKeyPath:nil
                                                               cacheName:nil];
     self.frc.delegate = (id)self;
 }
@@ -197,9 +189,29 @@
     //self.clearConfirmActionSheet.delegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(performFetch)
+                                             selector:@selector(doNothing)
                                                  name:@"SomethingChanged"
                                                object:nil];
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    
+    NSInteger returnCount = 0;
+    //id <NSFetchedResultsSectionInfo> sectionInfo = [self.frc sections][section];
+    NSInteger objects = [[self.frc fetchedObjects] count];
+    /*
+    if (self.frc && (objects > 0)) {
+        if (objects % 4 == 0) {
+            returnCount = (objects / 4);
+        } else {
+            returnCount = (objects / 4) + 1;
+        }
+    }
+     */
+    // not sure how to deal with frc controller and multiple objects in a row
+    return objects;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -207,17 +219,69 @@
     if (debug == 1) {
         NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
     }
-    static NSString *cellIdentifier = @"Item Cell";
-    UITableViewCell *cell =
+    static NSString *cellIdentifier = @"GroupPhotoCell";
+    CoreDataGroupTVC *cell =
     [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    cell.accessoryType = UITableViewCellAccessoryDetailButton;
-    Folders *folder = [self.frc objectAtIndexPath:indexPath];
-    NSMutableString *title = [NSMutableString stringWithFormat:@"%@", folder.name];
-    [title replaceOccurrencesOfString:@"(null)" withString:@"" options:0 range:NSMakeRange(0, [title length])];
-    cell.textLabel.text = title;
     
     
+    //Photos *photoObject = [self.frc objectAtIndexPath:indexPath];
+    //UIImage
+    Photos *photoObject = [self.frc.fetchedObjects objectAtIndex:indexPath.row];
+    UIImage *photoImage = [UIImage imageWithData:photoObject.photo];
+    [cell.photoButton1 setImage:photoImage
+                       forState:UIControlStateNormal];
+    //cell.photoButton1.imageView.image = [self createThumbnail:photoImage];
+    [cell.photoButton1 setTag:indexPath.row * 4];
+    [cell.photoButton1 setEnabled:YES];
+   
+    /*
+    if (indexPath.row * 4 + 1 < [[self.frc fetchedObjects] count]) {
+        photoObject = [self.frc.fetchedObjects objectAtIndex:(indexPath.row * 4) + 1];
+        photoImage = [UIImage imageWithData:photoObject.photo];
+        [cell.photoButton2 setImage:photoImage
+                           forState:UIControlStateNormal];
+        [cell.photoButton2 setTag:indexPath.row * 4 + 1];
+        [cell.photoButton2 setEnabled:YES];
+    } else {
+        cell.photoButton2.imageView.image = nil;
+        cell.photoButton2.enabled = NO;
+    }
+    
+    if (indexPath.row * 4 + 2 < [[self.frc fetchedObjects] count]) {
+        photoObject = [self.frc.fetchedObjects objectAtIndex:(indexPath.row * 4) + 2];
+        photoImage = [UIImage imageWithData:photoObject.photo];
+        [cell.photoButton3 setImage:photoImage
+                           forState:UIControlStateNormal];
+        [cell.photoButton3 setTag:indexPath.row * 4 + 2];
+        [cell.photoButton3 setEnabled:YES];
+    } else {
+        cell.photoButton3.imageView.image = nil;
+        cell.photoButton3.enabled = NO;
+    }
+    
+    if (indexPath.row * 4 + 3 < [[self.frc fetchedObjects] count]) {
+        photoObject = [self.frc.fetchedObjects objectAtIndex:(indexPath.row * 4) + 3];
+        [cell.photoButton4 setImage:photoImage
+                           forState:UIControlStateNormal];
+        cell.photoButton4.imageView.image = [self createThumbnail:photoImage];
+        [cell.photoButton4 setTag:indexPath.row * 4 + 3];
+        [cell.photoButton4 setEnabled:YES];
+    } else {
+        cell.photoButton4.imageView.image = nil;
+        cell.photoButton4.enabled = NO;
+    }
+    */
     return cell;
+}
+
+- (UIImage *)createThumbnail:(UIImage *)inPhoto {
+    CGSize size = CGSizeMake(60.0, 60.0);
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
+    [inPhoto drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return thumbnail;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -253,10 +317,19 @@
 {
     
     
-    if ([segue.identifier isEqualToString:@"Add Item Segue"]) {
+    if ([segue.identifier isEqualToString:@"ShowPhoto1"] ||
+        [segue.identifier isEqualToString:@"ShowPhoto2"] ||
+        [segue.identifier isEqualToString:@"ShowPhoto3"] ||
+        [segue.identifier isEqualToString:@"ShowPhoto4"]) {
+        
+        NSInteger indexForThumb = [sender tag];
+        NSManagedObjectID *selectedID = [[NSManagedObjectID alloc] init];
+        selectedID = [[self.frc.fetchedObjects objectAtIndex:indexForThumb] objectID];
+        
+        
         //CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
         CoreDataGroupVC *groupVC = segue.destinationViewController;
-        [groupVC setSelectedGroupID:_itemID];
+        [groupVC setPhotoObjectID:selectedID];
         
     }
 }

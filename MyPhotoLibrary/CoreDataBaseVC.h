@@ -11,12 +11,13 @@
 #import "CoreDataHelper.h"
 #import "Folders.h"
 
-@interface CoreDataBaseVC : UIViewController
+@interface CoreDataBaseVC : UIViewController <NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) NSFetchedResultsController *frc;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSManagedObjectID *itemID;
 
 - (void)performFetch;
+- (void)doNothing;
 
 @end

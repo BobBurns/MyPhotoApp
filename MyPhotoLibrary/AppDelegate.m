@@ -21,10 +21,22 @@
         NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
     }
     if (!_coreDataHelper) {
-        _coreDataHelper = [CoreDataHelper new];
-        [_coreDataHelper setupCoreData];
+        static dispatch_once_t predicate;
+        dispatch_once(&predicate, ^{
+            _coreDataHelper = [CoreDataHelper new];
+        });
+        
+       [_coreDataHelper setupCoreData];
     }
     return _coreDataHelper;
+}
+
++ (void)initialize
+{
+    [[NSUserDefaults standardUserDefaults] registerDefaults:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      [NSNumber numberWithBool:YES], @"firstRun",
+      nil]];
 }
             
 
@@ -39,7 +51,7 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-   // [[self cdh] saveContext];
+   [[self cdh] saveContext];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -51,6 +63,6 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-   // [[self cdh] saveContext];
+   [[self cdh] saveContext];
 }
 @end

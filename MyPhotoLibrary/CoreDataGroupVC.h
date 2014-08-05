@@ -11,6 +11,6 @@
 
 @interface CoreDataGroupVC : UIViewController
 
-@property (nonatomic, strong) NSManagedObjectID *selectedGroupID;
+@property (nonatomic, strong) NSManagedObjectID *photoObjectID;
 
 @end

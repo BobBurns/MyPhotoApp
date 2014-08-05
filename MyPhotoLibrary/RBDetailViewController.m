@@ -7,10 +7,17 @@
 //
 
 #import "RBDetailViewController.h"
+#import "AppDelegate.h"
+#import "CoreDataHelper.h"
+#import "Folders.h"
+#import "Photos.h"
 
 @interface RBDetailViewController ()
 
+@property (nonatomic, strong) Folders *currentFolder;
+
 - (void)savePhoto;
+- (void)setupFirstFolder;
 
 @end
 
@@ -26,6 +33,11 @@
     self.navigationItem.rightBarButtonItem = button;
     
     [self.assetImageView setImage:self.assetImage];
+    
+    //set up current folder
+    //CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
+    //_currentFolder = cdh.defaultFolder;
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -45,9 +57,34 @@
     _assetImageView = nil;
     
 }
+- (void)setupFirstFolder {
+
+    
+}
 
 - (IBAction)selectButton:(id)sender {
-    NSLog(@"This is where we save the picture to our own Library");
+    CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
+    
+    Photos *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:@"Photos" inManagedObjectContext:cdh.context];
+    // get name metadata 
+    
+    /*
+    if (_currentFolder == nil) {
+        NSLog(@"no current folder");
+        _currentFolder = cdh.defaultFolder; //possibly overkill
+    }
+    */
+    
+    newPhoto.photo =  UIImageJPEGRepresentation(self.assetImage, 1.0); // best quality compression
+    newPhoto.date = [NSDate date];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
+                                                        object:nil];
+    
+    //[_currentFolder addImagesObject:newPhoto];
+    [cdh saveContext];
+    
+    
+    
 }
 
 - (void)savePhoto

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "Folders.h"
 
 @interface CoreDataHelper : NSObject
 
@@ -15,6 +16,7 @@
 @property (nonatomic, readonly) NSManagedObjectModel *model;
 @property (nonatomic, readonly) NSPersistentStoreCoordinator *coordinator;
 @property (nonatomic, readonly) NSPersistentStore *store;
+@property (nonatomic, strong) Folders *defaultFolder;
 
 - (void)setupCoreData;
 - (void)saveContext; // Thank you Tim Roadley

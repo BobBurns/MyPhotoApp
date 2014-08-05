@@ -21,6 +21,7 @@
 		3CAEBE471983457800E4002C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CAEBE451983457800E4002C /* Main.storyboard */; };
 		3CAEBE491983457800E4002C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CAEBE481983457800E4002C /* Images.xcassets */; };
 		3CAEBE551983457800E4002C /* MyPhotoLibraryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE541983457800E4002C /* MyPhotoLibraryTests.m */; };
+		3CE04C1A198E554B0070E1B2 /* CoreDataGroupTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE04C19198E554B0070E1B2 /* CoreDataGroupTVC.m */; };
 		3CFA3C9C19896432005224F2 /* RBDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFA3C9B19896432005224F2 /* RBDetailViewController.m */; };
 		3CFA3CA01989B320005224F2 /* MyPhoto.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3CFA3C9E1989B320005224F2 /* MyPhoto.xcdatamodeld */; };
 		3CFA3CA21989BAFC005224F2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CFA3CA11989BAFC005224F2 /* CoreGraphics.framework */; };
@@ -67,6 +68,8 @@
 		3CAEBE531983457800E4002C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3CAEBE541983457800E4002C /* MyPhotoLibraryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyPhotoLibraryTests.m; sourceTree = "<group>"; };
 		3CAEBE5E198345C700E4002C /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		3CE04C18198E554B0070E1B2 /* CoreDataGroupTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataGroupTVC.h; sourceTree = "<group>"; };
+		3CE04C19198E554B0070E1B2 /* CoreDataGroupTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataGroupTVC.m; sourceTree = "<group>"; };
 		3CFA3C9A19896432005224F2 /* RBDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RBDetailViewController.h; sourceTree = "<group>"; };
 		3CFA3C9B19896432005224F2 /* RBDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RBDetailViewController.m; sourceTree = "<group>"; };
 		3CFA3C9F1989B320005224F2 /* MyPhoto.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyPhoto.xcdatamodel; sourceTree = "<group>"; };
@@ -206,6 +209,8 @@
 				3CFA3CA51989C24F005224F2 /* CoreDataBaseVC.m */,
 				3CFA3CAD1989D283005224F2 /* CoreDataGroupVC.h */,
 				3CFA3CAE1989D283005224F2 /* CoreDataGroupVC.m */,
+				3CE04C18198E554B0070E1B2 /* CoreDataGroupTVC.h */,
+				3CE04C19198E554B0070E1B2 /* CoreDataGroupTVC.m */,
 			);
 			name = "CoreData ViewControllers";
 			sourceTree = "<group>";
@@ -317,6 +322,7 @@
 				3CFA3CAC1989CD46005224F2 /* Folders.m in Sources */,
 				3CFA3CAF1989D283005224F2 /* CoreDataGroupVC.m in Sources */,
 				3CFA3CA91989CD46005224F2 /* Photos.m in Sources */,
+				3CE04C1A198E554B0070E1B2 /* CoreDataGroupTVC.m in Sources */,
 				3CAEBE3E1983457800E4002C /* main.m in Sources */,
 				3CFA3CA61989C24F005224F2 /* CoreDataBaseVC.m in Sources */,
 				3C05E2371985C10D008C33E2 /* RBGroupViewController.m in Sources */,
