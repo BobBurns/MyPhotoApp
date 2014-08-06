@@ -136,28 +136,31 @@
     if (debug == 1) {
         NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
     }
+    NSError *error = nil;
     CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
     
-    /*
+    
     NSFetchRequest *folderRequest = [NSFetchRequest fetchRequestWithEntityName:@"Folders"];
     folderRequest.sortDescriptors = [NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"name"
                                                                                             ascending:YES],
                                      nil];
     
-    //NSPredicate *folderPredicate = [NSPredicate predicateWithFormat:@"name == 'defaultFolder'"];
-    //[folderRequest setPredicate:folderPredicate];
+    NSPredicate *folderPredicate = [NSPredicate predicateWithFormat:@"name == 'defaultFolder'"];
+    [folderRequest setPredicate:folderPredicate];
+    self.navigationItem.title = @"default folder";
     
-    NSFetchedResultsController *folderFetch = [[NSFetchedResultsController alloc] initWithFetchRequest:folderRequest
-                                                                                  managedObjectContext:cdh.context
-                                                                                    sectionNameKeyPath:nil
-                                                                                             cacheName:nil];
-    */
+    NSArray *folderFetch = [cdh.context executeFetchRequest:folderRequest error:&error];
+    if (!folderFetch) {
+        NSLog(@"Error fetching defaultFolder %@ '%@'", error, error.description);
+    }
+    NSLog(@"folder count: %d", [folderFetch count]);
+    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photos"];
     
-    request.sortDescriptors = [NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"date"
+    request.sortDescriptors = [NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"photoAlbum"
                                                              ascending:YES], nil];
-    //NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photoAlbum = '%@'", folderFetch];
-    //[request setPredicate:predicate];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photoAlbum.name = 'defaultFolder'"];
+    [request setPredicate:predicate];
     
     [request setFetchBatchSize:50];
     
@@ -165,6 +168,7 @@
                                                    managedObjectContext:cdh.context
                                                      sectionNameKeyPath:nil
                                                               cacheName:nil];
+    NSLog(@" fetched objects = %d", self.frc.fetchedObjects.count);
     self.frc.delegate = (id)self;
 }
 
@@ -192,6 +196,11 @@
                                              selector:@selector(doNothing)
                                                  name:@"SomethingChanged"
                                                object:nil];
+}
+- (void)dealloc
+{
+    self.frc = nil;
+    
 }
 
 
@@ -227,12 +236,13 @@
     //Photos *photoObject = [self.frc objectAtIndexPath:indexPath];
     //UIImage
     Photos *photoObject = [self.frc.fetchedObjects objectAtIndex:indexPath.row];
-    UIImage *photoImage = [UIImage imageWithData:photoObject.photo];
-    [cell.photoButton1 setImage:photoImage
-                       forState:UIControlStateNormal];
+    UIImage *groupImage = [UIImage imageWithData:photoObject.photo];
+    cell.photoImageView.image = groupImage;
+    cell.photoImageName.text = photoObject.name;
+    
     //cell.photoButton1.imageView.image = [self createThumbnail:photoImage];
-    [cell.photoButton1 setTag:indexPath.row * 4];
-    [cell.photoButton1 setEnabled:YES];
+    //[cell.photoButton1 setTag:indexPath.row * 4];
+    //[cell.photoButton1 setEnabled:YES];
    
     /*
     if (indexPath.row * 4 + 1 < [[self.frc fetchedObjects] count]) {
@@ -317,19 +327,17 @@
 {
     
     
-    if ([segue.identifier isEqualToString:@"ShowPhoto1"] ||
-        [segue.identifier isEqualToString:@"ShowPhoto2"] ||
-        [segue.identifier isEqualToString:@"ShowPhoto3"] ||
-        [segue.identifier isEqualToString:@"ShowPhoto4"]) {
+    if ([segue.identifier isEqualToString:@"showImage"]) {
         
-        NSInteger indexForThumb = [sender tag];
-        NSManagedObjectID *selectedID = [[NSManagedObjectID alloc] init];
-        selectedID = [[self.frc.fetchedObjects objectAtIndex:indexForThumb] objectID];
+        NSIndexPath *indexPath =
+        [_tableView indexPathForSelectedRow];
         
+        Photos *photoObject = [self.frc.fetchedObjects objectAtIndex:indexPath.row];
+        UIImage *groupImage = [UIImage imageWithData:photoObject.photo];
         
-        //CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
         CoreDataGroupVC *groupVC = segue.destinationViewController;
-        [groupVC setPhotoObjectID:selectedID];
+        [groupVC setMyPhotoImage:groupImage];
+        [groupVC setMyPhotoName:photoObject.name];
         
     }
 }

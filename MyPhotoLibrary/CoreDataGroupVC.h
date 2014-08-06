@@ -11,6 +11,9 @@
 
 @interface CoreDataGroupVC : UIViewController
 
-@property (nonatomic, strong) NSManagedObjectID *photoObjectID;
+
+@property (nonatomic, strong) UIImage *myPhotoImage;
+@property (nonatomic, strong) NSString *myPhotoName;
+@property (strong, nonatomic) IBOutlet UIImageView *photoImageView;
 
 @end

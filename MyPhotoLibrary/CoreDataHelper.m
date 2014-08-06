@@ -116,6 +116,20 @@ NSString *storeFilename = @"MyPhotoLibrary.sqlite";
     [self loadStore];
     //[self setupDefaultFolder]; //sets up current folder to use but doesn't save context
 }
+#pragma mark - iCloud
+
+- (BOOL)iCloudAccountIsSignedIn {
+    if (debug==1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    id token = [[NSFileManager defaultManager] ubiquityIdentityToken];
+    if (token) {
+        NSLog(@"*** iCloud is SIGNED IN with token '%@' **", token);
+        return YES;
+    }
+    NSLog(@"*** iCloud is NOT SIGNED IN **");
+    return NO;
+}
 
 #pragma mark - Saving
 

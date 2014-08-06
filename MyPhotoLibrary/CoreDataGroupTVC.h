@@ -19,6 +19,8 @@
 @property (nonatomic, strong) IBOutlet UIButton *assetButton2;
 @property (nonatomic, strong) IBOutlet UIButton *assetButton3;
 @property (nonatomic, strong) IBOutlet UIButton *assetButton4;
+@property (strong, nonatomic) IBOutlet UIImageView *photoImageView;
+@property (strong, nonatomic) IBOutlet UILabel *photoImageName;
 
 
 @end

@@ -18,7 +18,10 @@
 @property (nonatomic, readonly) NSPersistentStore *store;
 @property (nonatomic, strong) Folders *defaultFolder;
 
+@property (nonatomic, readonly) NSPersistentStore *iCloudStore;
+
 - (void)setupCoreData;
 - (void)saveContext; // Thank you Tim Roadley
+- (BOOL)iCloudAccountIsSignedIn;
 
 @end

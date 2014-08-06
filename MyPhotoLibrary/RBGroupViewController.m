@@ -271,6 +271,11 @@
         
         UIImage *img = [UIImage imageWithCGImage:[aRep fullScreenImage]];
         
+        NSString *aFileName = aRep.filename;
+        
+        detailVC.assetName = aFileName;
+        detailVC.assetURL = aRep.url;
+        
         [detailVC setAssetImage:img];
         
     }
