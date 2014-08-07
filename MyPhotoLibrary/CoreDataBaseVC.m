@@ -12,6 +12,7 @@
 #import "CoreDataGroupTVC.h"
 #import "Photos.h"
 #import "Folders.h"
+#import "Faulter.h"
 
 #define debug 1
 
@@ -153,7 +154,7 @@
     if (!folderFetch) {
         NSLog(@"Error fetching defaultFolder %@ '%@'", error, error.description);
     }
-    NSLog(@"folder count: %d", [folderFetch count]);
+    NSLog(@"folder count: %lu", (unsigned long)[folderFetch count]);
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photos"];
     
@@ -168,7 +169,7 @@
                                                    managedObjectContext:cdh.context
                                                      sectionNameKeyPath:nil
                                                               cacheName:nil];
-    NSLog(@" fetched objects = %d", self.frc.fetchedObjects.count);
+    NSLog(@" fetched objects = %lu", (unsigned long)self.frc.fetchedObjects.count);
     self.frc.delegate = (id)self;
 }
 
@@ -207,18 +208,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    NSInteger returnCount = 0;
+    //NSInteger returnCount = 0;
     //id <NSFetchedResultsSectionInfo> sectionInfo = [self.frc sections][section];
     NSInteger objects = [[self.frc fetchedObjects] count];
-    /*
-    if (self.frc && (objects > 0)) {
-        if (objects % 4 == 0) {
-            returnCount = (objects / 4);
-        } else {
-            returnCount = (objects / 4) + 1;
-        }
-    }
-     */
+   
     // not sure how to deal with frc controller and multiple objects in a row
     return objects;
 }
@@ -231,56 +224,16 @@
     static NSString *cellIdentifier = @"GroupPhotoCell";
     CoreDataGroupTVC *cell =
     [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+    //CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
     
     
-    //Photos *photoObject = [self.frc objectAtIndexPath:indexPath];
-    //UIImage
     Photos *photoObject = [self.frc.fetchedObjects objectAtIndex:indexPath.row];
     UIImage *groupImage = [UIImage imageWithData:photoObject.photo];
     cell.photoImageView.image = groupImage;
     cell.photoImageName.text = photoObject.name;
     
-    //cell.photoButton1.imageView.image = [self createThumbnail:photoImage];
-    //[cell.photoButton1 setTag:indexPath.row * 4];
-    //[cell.photoButton1 setEnabled:YES];
-   
-    /*
-    if (indexPath.row * 4 + 1 < [[self.frc fetchedObjects] count]) {
-        photoObject = [self.frc.fetchedObjects objectAtIndex:(indexPath.row * 4) + 1];
-        photoImage = [UIImage imageWithData:photoObject.photo];
-        [cell.photoButton2 setImage:photoImage
-                           forState:UIControlStateNormal];
-        [cell.photoButton2 setTag:indexPath.row * 4 + 1];
-        [cell.photoButton2 setEnabled:YES];
-    } else {
-        cell.photoButton2.imageView.image = nil;
-        cell.photoButton2.enabled = NO;
-    }
+    //fault objects to save memory
     
-    if (indexPath.row * 4 + 2 < [[self.frc fetchedObjects] count]) {
-        photoObject = [self.frc.fetchedObjects objectAtIndex:(indexPath.row * 4) + 2];
-        photoImage = [UIImage imageWithData:photoObject.photo];
-        [cell.photoButton3 setImage:photoImage
-                           forState:UIControlStateNormal];
-        [cell.photoButton3 setTag:indexPath.row * 4 + 2];
-        [cell.photoButton3 setEnabled:YES];
-    } else {
-        cell.photoButton3.imageView.image = nil;
-        cell.photoButton3.enabled = NO;
-    }
-    
-    if (indexPath.row * 4 + 3 < [[self.frc fetchedObjects] count]) {
-        photoObject = [self.frc.fetchedObjects objectAtIndex:(indexPath.row * 4) + 3];
-        [cell.photoButton4 setImage:photoImage
-                           forState:UIControlStateNormal];
-        cell.photoButton4.imageView.image = [self createThumbnail:photoImage];
-        [cell.photoButton4 setTag:indexPath.row * 4 + 3];
-        [cell.photoButton4 setEnabled:YES];
-    } else {
-        cell.photoButton4.imageView.image = nil;
-        cell.photoButton4.enabled = NO;
-    }
-    */
     return cell;
 }
 
@@ -310,7 +263,7 @@
     if (debug == 1) {
         NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
     }
-    _itemID = [[self.frc objectAtIndexPath:indexPath] objectID];
+    
     //Folders *item = (Folders *)[self.frc.managedObjectContext existingObjectWithID:_itemID error:nil];
     
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -331,6 +284,7 @@
         
         NSIndexPath *indexPath =
         [_tableView indexPathForSelectedRow];
+        CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
         
         Photos *photoObject = [self.frc.fetchedObjects objectAtIndex:indexPath.row];
         UIImage *groupImage = [UIImage imageWithData:photoObject.photo];
@@ -338,6 +292,10 @@
         CoreDataGroupVC *groupVC = segue.destinationViewController;
         [groupVC setMyPhotoImage:groupImage];
         [groupVC setMyPhotoName:photoObject.name];
+        
+        //Fault object to save memory
+        [Faulter faultObjectWithID:photoObject.objectID inContext:cdh.context];
+        groupImage = nil;
         
     }
 }

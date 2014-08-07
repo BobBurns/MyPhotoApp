@@ -122,19 +122,7 @@ NSString *iCloudStoredFilename = @"iCloud.sqlite";
         }
     }
 }
-- (void)setupDefaultFolder {
-    if (debug==1) {
-        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
-    }
-    _defaultFolder = [NSEntityDescription insertNewObjectForEntityForName:@"Folders"
-                                                   inManagedObjectContext:_context];
-    _defaultFolder.date = [NSDate date];
-    NSString *dateString = [NSDateFormatter localizedStringFromDate:_defaultFolder.date
-                                                          dateStyle:NSDateFormatterShortStyle
-                                                          timeStyle:NSDateFormatterNoStyle];
-    
-    _defaultFolder.name = @"defaultFolder";
-}
+
 
 - (void)setupCoreData {
     if (debug==1) {
@@ -143,7 +131,6 @@ NSString *iCloudStoredFilename = @"iCloud.sqlite";
     if (![self loadiCloudStore]) {
         [self loadStore];
     }
-    //[self setupDefaultFolder]; //sets up current folder to use but doesn't save context
 }
 #pragma mark - iCloud
 
