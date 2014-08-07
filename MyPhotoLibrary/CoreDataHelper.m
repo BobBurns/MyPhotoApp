@@ -257,6 +257,31 @@ NSString *iCloudStoredFilename = @"iCloud.sqlite";
 
 #pragma mark - Saving
 
+- (void)backgroundSaveContext {
+    if (debug==1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    // First, save the child context in the foreground (fast, all in memory)
+    [self saveContext];
+    
+    // Then, save the parent context.
+    [_parentContext performBlock:^{
+        if ([_parentContext hasChanges]) {
+            NSError *error = nil;
+            if ([_parentContext save:&error]) {
+                NSLog(@"_parentContext SAVED changes to persistent store");
+            }
+            else {
+                NSLog(@"_parentContext FAILED to save: %@", error);
+                //[self showValidationError:error];
+            }
+        }
+        else {
+            NSLog(@"_parentContext SKIPPED saving as there are no changes");
+        }
+    }];
+}
+
 - (void)saveContext {
     if (debug==1) {
         NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));

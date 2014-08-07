@@ -31,5 +31,6 @@
 - (void)setupCoreData;
 - (void)saveContext; // Thank you Tim Roadley
 - (BOOL)iCloudAccountIsSignedIn;
+- (void)backgroundSaveContext;
 
 @end

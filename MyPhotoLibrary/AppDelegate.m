@@ -52,7 +52,7 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-   [[self cdh] saveContext];
+   [[self cdh] backgroundSaveContext];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -64,6 +64,6 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-   [[self cdh] saveContext];
+   [[self cdh] backgroundSaveContext];
 }
 @end

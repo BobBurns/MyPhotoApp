@@ -139,7 +139,7 @@
                                                         object:nil];
     
     [_currentFolder addImagesObject:newPhoto];
-    [cdh saveContext];
+    [cdh backgroundSaveContext];
 }
 
 #pragma mark - Navigation
