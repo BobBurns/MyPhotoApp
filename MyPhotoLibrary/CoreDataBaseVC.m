@@ -193,7 +193,7 @@
     //self.clearConfirmActionSheet.delegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(doNothing)
+                                             selector:@selector(performFetch)
                                                  name:@"SomethingChanged"
                                                object:nil];
 }

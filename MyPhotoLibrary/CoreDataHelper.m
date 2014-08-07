@@ -15,6 +15,7 @@
 #pragma mark - Files
 
 NSString *storeFilename = @"MyPhotoLibrary.sqlite";
+NSString *iCloudStoredFilename = @"iCloud.sqlite";
 
 #pragma mark - Paths
 
@@ -66,8 +67,34 @@ NSString *storeFilename = @"MyPhotoLibrary.sqlite";
     }
     _model = [NSManagedObjectModel mergedModelFromBundles:nil];
     _coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:_model];
+    
+    _parentContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    [_parentContext performBlockAndWait:^{
+        [_parentContext setPersistentStoreCoordinator:_coordinator];
+        [_parentContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+    }];
+    
     _context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    [_context setPersistentStoreCoordinator:_coordinator];
+    [_context setParentContext:_parentContext];
+    [_context setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+    
+    _importContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    [_importContext performBlockAndWait:^{
+        [_importContext setParentContext:_context];
+        [_importContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+        [_importContext setUndoManager:nil]; // the default on iOS
+    }];
+    
+    //_sourceCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:_model];
+    _sourceContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    [_sourceContext performBlockAndWait:^{
+        [_sourceContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+        [_sourceContext setParentContext:_context];
+        [_sourceContext setUndoManager:nil]; // the default on iOS
+    }];
+    
+    [self listenForStoreChanges];
+    
     return self;
 }
 
@@ -113,7 +140,9 @@ NSString *storeFilename = @"MyPhotoLibrary.sqlite";
     if (debug==1) {
         NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
     }
-    [self loadStore];
+    if (![self loadiCloudStore]) {
+        [self loadStore];
+    }
     //[self setupDefaultFolder]; //sets up current folder to use but doesn't save context
 }
 #pragma mark - iCloud
@@ -129,6 +158,101 @@ NSString *storeFilename = @"MyPhotoLibrary.sqlite";
     }
     NSLog(@"*** iCloud is NOT SIGNED IN **");
     return NO;
+}
+- (NSURL *)iCloudStoreURL {
+    if (debug==1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    return [[self applicationStoresDirectory] URLByAppendingPathComponent:iCloudStoredFilename];
+}
+- (BOOL)loadiCloudStore {
+    if (debug==1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    if (_iCloudStore) return YES;
+    
+    NSDictionary *options = @{
+                              NSMigratePersistentStoresAutomaticallyOption:@YES,
+                              NSInferMappingModelAutomaticallyOption:@YES,
+                              NSPersistentStoreUbiquitousContentNameKey:@"MyPhotoLibrary"
+                              };
+    NSError *error = nil;
+    _iCloudStore = [_coordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                              configuration:nil
+                                                        URL:[self iCloudStoreURL]
+                                                    options:options error:&error];
+    if (_iCloudStore) {
+        NSLog(@"*** The iCloud Store has been successfully configured at '%@' **", _iCloudStore.URL.path);
+        
+        return YES;
+    }
+    NSLog(@"*** FAILED to onfigure the iCloud Store : %@ ***", error);
+    
+    return NO;
+    
+}
+- (void)listenForStoreChanges {
+    if (debug==1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self
+           selector:@selector(storesWillChange:)
+               name:NSPersistentStoreCoordinatorStoresWillChangeNotification
+             object:_coordinator];
+    [nc addObserver:self
+           selector:@selector(storesWillChange:)
+               name:NSPersistentStoreCoordinatorStoresDidChangeNotification
+             object:_coordinator];
+    
+    [nc addObserver:self
+           selector:@selector(persistentStoresDidImportUbiquitousContentChanges:)
+               name:NSPersistentStoreDidImportUbiquitousContentChangesNotification
+             object:_coordinator];
+    
+}
+- (void)storesWillChange:(NSNotification *)notification {
+    if (debug==1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    [_importContext performBlockAndWait:^{
+        [_importContext save:nil];
+        [self resetContext:_importContext];
+    }];
+    [_context performBlockAndWait:^{
+        [_context save:nil];
+        [self resetContext:_context];
+    }];
+    [_parentContext performBlockAndWait:^{
+        [_parentContext save:nil];
+        [self resetContext:_parentContext];
+    }];
+    
+    //Refresh UI
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
+                                                        object:nil
+                                                      userInfo:nil];
+}
+- (void)storesDidChange:(NSNotification *)notification {
+    if (debug==1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    //Refresh UI
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
+                                                        object:nil
+                                                      userInfo:nil];
+}
+- (void)persistentStoresDidImportUbiquitousContentChanges:(NSNotification *)notification {
+    if (debug==1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    [_context performBlockAndWait:^{
+        [_context mergeChangesFromContextDidSaveNotification:notification];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
+                                                            object:nil
+                                                          userInfo:nil];
+    }];
+    
 }
 
 #pragma mark - Saving
@@ -147,6 +271,43 @@ NSString *storeFilename = @"MyPhotoLibrary.sqlite";
     } else {
         NSLog(@"SKIPPED _context save, there are no changes!");
     }
+}
+#pragma mark – UNDERLYING DATA CHANGE NOTIFICATION
+
+- (void)somethingChanged {
+    
+    if (debug==1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    // Send a notification that tells observing interfaces to refresh their data
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"SomethingChanged" object:nil];
+}
+
+#pragma mark - CORE DATA RESET
+
+- (void)resetContext:(NSManagedObjectContext*)moc {
+    
+    [moc performBlockAndWait:^{
+        [moc reset];
+    }];
+}
+
+- (BOOL)reloadStore {
+    BOOL success = NO;
+    NSError *error = nil;
+    if (![_coordinator removePersistentStore:_store error:&error]) {
+        NSLog(@"Unable to remove persistent store : %@", error);
+    }
+    [self resetContext:_sourceContext];
+    [self resetContext:_importContext];
+    [self resetContext:_context];
+    [self resetContext:_parentContext];
+    _store = nil;
+    [self setupCoreData];
+    [self somethingChanged];
+    if (_store) {success = YES;}
+    return success;
 }
 
 @end
