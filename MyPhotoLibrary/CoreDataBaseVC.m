@@ -159,7 +159,11 @@
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photos"];
     
     request.sortDescriptors = [NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"photoAlbum"
-                                                             ascending:YES], nil];
+                                                             ascending:YES],
+                               [NSSortDescriptor sortDescriptorWithKey:@"date"
+                                                             ascending:YES],
+                               nil];
+    
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photoAlbum.name = 'defaultFolder'"];
     [request setPredicate:predicate];
     
@@ -189,6 +193,9 @@
         NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
     }
     [super viewDidLoad];
+    //self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    //[self.tableView setEditing:YES animated:YES];
+    
     [self configureFetch];
     [self performFetch];
     //self.clearConfirmActionSheet.delegate = self;
@@ -253,9 +260,11 @@
         NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
     }
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        Folders *deletedTarget = [self.frc objectAtIndexPath:indexPath];
+        Photos *deletedTarget = [self.frc objectAtIndexPath:indexPath];
         [self.frc.managedObjectContext deleteObject:deletedTarget];
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
+        [cdh backgroundSaveContext];
     }
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -267,6 +276,11 @@
     //Folders *item = (Folders *)[self.frc.managedObjectContext existingObjectWithID:_itemID error:nil];
     
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+}
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
 }
 #pragma mark - INTERACTION
 
