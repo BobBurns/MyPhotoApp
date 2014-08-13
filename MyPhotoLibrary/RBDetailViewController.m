@@ -34,6 +34,8 @@
     
     [self.assetImageView setImage:self.assetImage];
     
+    NSLog(@"asset url: %@", _assetURL);
+    
     
     //set up current folder
     NSError *error = nil;
