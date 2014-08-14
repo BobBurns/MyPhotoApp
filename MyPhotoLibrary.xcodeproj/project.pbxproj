@@ -13,15 +13,22 @@
 		3C064F9319888B79003BA399 /* RBGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C064F9219888B79003BA399 /* RBGroupTableViewCell.m */; };
 		3C18B363198702CB00EAA012 /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C18B362198702CB00EAA012 /* PasswordViewController.m */; };
 		3C18B36519872F6D00EAA012 /* password_test.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C18B36419872F6D00EAA012 /* password_test.png */; };
+		3C208B20199B0FF600BA9F68 /* LibraryRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C208B1F199B0FF600BA9F68 /* LibraryRootViewController.m */; };
+		3C208B23199B111700BA9F68 /* GridCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C208B22199B111700BA9F68 /* GridCollectionViewController.m */; };
+		3C208B26199B114100BA9F68 /* GridCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C208B25199B114100BA9F68 /* GridCollectionViewCell.m */; };
+		3C2119CC199D377D002533B1 /* FetchGroupCollectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2119CB199D377D002533B1 /* FetchGroupCollectionVC.m */; };
+		3C2119CF199D4C39002533B1 /* CDDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2119CE199D4C39002533B1 /* CDDetailViewController.m */; };
+		3C2119D1199D55ED002533B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C2119D0199D55ED002533B1 /* Main.storyboard */; };
+		3C337642199C4D55001029A8 /* CDGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C337641199C4D55001029A8 /* CDGroupCell.m */; };
 		3C67D6DD19846BF40043213D /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C67D6DC19846BF40043213D /* AssetsLibrary.framework */; };
 		3C67D6E019847FCF0043213D /* RBLibraryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C67D6DF19847FCF0043213D /* RBLibraryTableViewCell.m */; };
 		3CAEBE3E1983457800E4002C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE3D1983457800E4002C /* main.m */; };
 		3CAEBE411983457800E4002C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE401983457800E4002C /* AppDelegate.m */; };
 		3CAEBE441983457800E4002C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE431983457800E4002C /* ViewController.m */; };
-		3CAEBE471983457800E4002C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CAEBE451983457800E4002C /* Main.storyboard */; };
 		3CAEBE491983457800E4002C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CAEBE481983457800E4002C /* Images.xcassets */; };
 		3CAEBE551983457800E4002C /* MyPhotoLibraryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE541983457800E4002C /* MyPhotoLibraryTests.m */; };
 		3CCEB94C1993DA6C002920EC /* Faulter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCEB94B1993DA6C002920EC /* Faulter.m */; };
+		3CD287B9199BE50600502FC9 /* SelectPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD287B8199BE50600502FC9 /* SelectPhotoViewController.m */; };
 		3CE04C1A198E554B0070E1B2 /* CoreDataGroupTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE04C19198E554B0070E1B2 /* CoreDataGroupTVC.m */; };
 		3CF710331995C2DE0040ADF6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3CF710321995C2DE0040ADF6 /* Settings.bundle */; };
 		3CFA3C9C19896432005224F2 /* RBDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFA3C9B19896432005224F2 /* RBDetailViewController.m */; };
@@ -54,6 +61,19 @@
 		3C18B361198702CB00EAA012 /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
 		3C18B362198702CB00EAA012 /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
 		3C18B36419872F6D00EAA012 /* password_test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = password_test.png; path = ../../../../Desktop/password_test.png; sourceTree = "<group>"; };
+		3C208B1E199B0FF600BA9F68 /* LibraryRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryRootViewController.h; sourceTree = "<group>"; };
+		3C208B1F199B0FF600BA9F68 /* LibraryRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryRootViewController.m; sourceTree = "<group>"; };
+		3C208B21199B111700BA9F68 /* GridCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridCollectionViewController.h; sourceTree = "<group>"; };
+		3C208B22199B111700BA9F68 /* GridCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridCollectionViewController.m; sourceTree = "<group>"; };
+		3C208B24199B114100BA9F68 /* GridCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridCollectionViewCell.h; sourceTree = "<group>"; };
+		3C208B25199B114100BA9F68 /* GridCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridCollectionViewCell.m; sourceTree = "<group>"; };
+		3C2119CA199D377D002533B1 /* FetchGroupCollectionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FetchGroupCollectionVC.h; sourceTree = "<group>"; };
+		3C2119CB199D377D002533B1 /* FetchGroupCollectionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FetchGroupCollectionVC.m; sourceTree = "<group>"; };
+		3C2119CD199D4C39002533B1 /* CDDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDDetailViewController.h; sourceTree = "<group>"; };
+		3C2119CE199D4C39002533B1 /* CDDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDDetailViewController.m; sourceTree = "<group>"; };
+		3C2119D0199D55ED002533B1 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		3C337640199C4D55001029A8 /* CDGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDGroupCell.h; sourceTree = "<group>"; };
+		3C337641199C4D55001029A8 /* CDGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDGroupCell.m; sourceTree = "<group>"; };
 		3C6299611991A3B300AAB9B6 /* MyPhotoLibrary.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MyPhotoLibrary.entitlements; sourceTree = "<group>"; };
 		3C67D6DC19846BF40043213D /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		3C67D6DE19847FCF0043213D /* RBLibraryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RBLibraryTableViewCell.h; sourceTree = "<group>"; };
@@ -65,7 +85,6 @@
 		3CAEBE401983457800E4002C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		3CAEBE421983457800E4002C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		3CAEBE431983457800E4002C /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		3CAEBE461983457800E4002C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3CAEBE481983457800E4002C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3CAEBE4E1983457800E4002C /* MyPhotoLibraryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyPhotoLibraryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CAEBE531983457800E4002C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -73,6 +92,8 @@
 		3CAEBE5E198345C700E4002C /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		3CCEB94A1993DA6C002920EC /* Faulter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Faulter.h; sourceTree = "<group>"; };
 		3CCEB94B1993DA6C002920EC /* Faulter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Faulter.m; sourceTree = "<group>"; };
+		3CD287B7199BE50600502FC9 /* SelectPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectPhotoViewController.h; sourceTree = "<group>"; };
+		3CD287B8199BE50600502FC9 /* SelectPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectPhotoViewController.m; sourceTree = "<group>"; };
 		3CE04C18198E554B0070E1B2 /* CoreDataGroupTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataGroupTVC.h; sourceTree = "<group>"; };
 		3CE04C19198E554B0070E1B2 /* CoreDataGroupTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataGroupTVC.m; sourceTree = "<group>"; };
 		3CF710321995C2DE0040ADF6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -127,6 +148,21 @@
 			name = "Core Data Classes";
 			sourceTree = "<group>";
 		};
+		3C208B1D199B0EDB00BA9F68 /* PHAssetViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				3CD287B7199BE50600502FC9 /* SelectPhotoViewController.h */,
+				3CD287B8199BE50600502FC9 /* SelectPhotoViewController.m */,
+				3C208B24199B114100BA9F68 /* GridCollectionViewCell.h */,
+				3C208B25199B114100BA9F68 /* GridCollectionViewCell.m */,
+				3C208B21199B111700BA9F68 /* GridCollectionViewController.h */,
+				3C208B22199B111700BA9F68 /* GridCollectionViewController.m */,
+				3C208B1E199B0FF600BA9F68 /* LibraryRootViewController.h */,
+				3C208B1F199B0FF600BA9F68 /* LibraryRootViewController.m */,
+			);
+			name = PHAssetViewControllers;
+			sourceTree = "<group>";
+		};
 		3CAEBE2F1983457700E4002C = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +188,7 @@
 		3CAEBE3A1983457800E4002C /* MyPhotoLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				3C208B1D199B0EDB00BA9F68 /* PHAssetViewControllers */,
 				3C6299611991A3B300AAB9B6 /* MyPhotoLibrary.entitlements */,
 				3CFA3CA31989C1D8005224F2 /* CoreData ViewControllers */,
 				3CFA3C9D19896451005224F2 /* Other */,
@@ -161,8 +198,8 @@
 				3CAEBE401983457800E4002C /* AppDelegate.m */,
 				3CAEBE421983457800E4002C /* ViewController.h */,
 				3CAEBE431983457800E4002C /* ViewController.m */,
-				3CAEBE451983457800E4002C /* Main.storyboard */,
 				3CAEBE481983457800E4002C /* Images.xcassets */,
+				3C2119D0199D55ED002533B1 /* Main.storyboard */,
 				3CAEBE3B1983457800E4002C /* Supporting Files */,
 				3C67D6DE19847FCF0043213D /* RBLibraryTableViewCell.h */,
 				3C67D6DF19847FCF0043213D /* RBLibraryTableViewCell.m */,
@@ -221,6 +258,12 @@
 				3CFA3CAE1989D283005224F2 /* CoreDataGroupVC.m */,
 				3CE04C18198E554B0070E1B2 /* CoreDataGroupTVC.h */,
 				3CE04C19198E554B0070E1B2 /* CoreDataGroupTVC.m */,
+				3C337640199C4D55001029A8 /* CDGroupCell.h */,
+				3C337641199C4D55001029A8 /* CDGroupCell.m */,
+				3C2119CA199D377D002533B1 /* FetchGroupCollectionVC.h */,
+				3C2119CB199D377D002533B1 /* FetchGroupCollectionVC.m */,
+				3C2119CD199D4C39002533B1 /* CDDetailViewController.h */,
+				3C2119CE199D4C39002533B1 /* CDDetailViewController.m */,
 			);
 			name = "CoreData ViewControllers";
 			sourceTree = "<group>";
@@ -312,9 +355,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CF710331995C2DE0040ADF6 /* Settings.bundle in Resources */,
-				3CAEBE471983457800E4002C /* Main.storyboard in Resources */,
 				3C18B36519872F6D00EAA012 /* password_test.png in Resources */,
 				3CAEBE491983457800E4002C /* Images.xcassets in Resources */,
+				3C2119D1199D55ED002533B1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,20 +376,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CAEBE441983457800E4002C /* ViewController.m in Sources */,
+				3C208B26199B114100BA9F68 /* GridCollectionViewCell.m in Sources */,
 				3CFA3C9C19896432005224F2 /* RBDetailViewController.m in Sources */,
+				3C2119CF199D4C39002533B1 /* CDDetailViewController.m in Sources */,
 				3CFA3CA01989B320005224F2 /* MyPhoto.xcdatamodeld in Sources */,
 				3CAEBE411983457800E4002C /* AppDelegate.m in Sources */,
+				3C2119CC199D377D002533B1 /* FetchGroupCollectionVC.m in Sources */,
 				3CFA3CAC1989CD46005224F2 /* Folders.m in Sources */,
 				3CFA3CAF1989D283005224F2 /* CoreDataGroupVC.m in Sources */,
 				3CFA3CA91989CD46005224F2 /* Photos.m in Sources */,
+				3C208B20199B0FF600BA9F68 /* LibraryRootViewController.m in Sources */,
 				3CCEB94C1993DA6C002920EC /* Faulter.m in Sources */,
 				3CE04C1A198E554B0070E1B2 /* CoreDataGroupTVC.m in Sources */,
+				3C208B23199B111700BA9F68 /* GridCollectionViewController.m in Sources */,
 				3CAEBE3E1983457800E4002C /* main.m in Sources */,
 				3CFA3CA61989C24F005224F2 /* CoreDataBaseVC.m in Sources */,
 				3C05E2371985C10D008C33E2 /* RBGroupViewController.m in Sources */,
+				3CD287B9199BE50600502FC9 /* SelectPhotoViewController.m in Sources */,
 				3C67D6E019847FCF0043213D /* RBLibraryTableViewCell.m in Sources */,
 				3C064F9319888B79003BA399 /* RBGroupTableViewCell.m in Sources */,
 				3C18B363198702CB00EAA012 /* PasswordViewController.m in Sources */,
+				3C337642199C4D55001029A8 /* CDGroupCell.m in Sources */,
 				3C064F9019885EDB003BA399 /* CoreDataHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -368,17 +418,6 @@
 			targetProxy = 3CAEBE4F1983457800E4002C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		3CAEBE451983457800E4002C /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3CAEBE461983457800E4002C /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		3CAEBE561983457800E4002C /* Debug */ = {
@@ -472,7 +511,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -490,7 +529,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
