@@ -22,6 +22,8 @@
 		3C337642199C4D55001029A8 /* CDGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C337641199C4D55001029A8 /* CDGroupCell.m */; };
 		3C67D6DD19846BF40043213D /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C67D6DC19846BF40043213D /* AssetsLibrary.framework */; };
 		3C67D6E019847FCF0043213D /* RBLibraryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C67D6DF19847FCF0043213D /* RBLibraryTableViewCell.m */; };
+		3C76786F19A1775E0039D18A /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C76786E19A1775E0039D18A /* KeychainItemWrapper.m */; };
+		3C76787119A177A30039D18A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C76787019A177A30039D18A /* Security.framework */; };
 		3CAEBE3E1983457800E4002C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE3D1983457800E4002C /* main.m */; };
 		3CAEBE411983457800E4002C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE401983457800E4002C /* AppDelegate.m */; };
 		3CAEBE441983457800E4002C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE431983457800E4002C /* ViewController.m */; };
@@ -78,6 +80,9 @@
 		3C67D6DC19846BF40043213D /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		3C67D6DE19847FCF0043213D /* RBLibraryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RBLibraryTableViewCell.h; sourceTree = "<group>"; };
 		3C67D6DF19847FCF0043213D /* RBLibraryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RBLibraryTableViewCell.m; sourceTree = "<group>"; };
+		3C76786D19A1775E0039D18A /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItemWrapper.h; sourceTree = "<group>"; };
+		3C76786E19A1775E0039D18A /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainItemWrapper.m; sourceTree = "<group>"; };
+		3C76787019A177A30039D18A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		3CAEBE381983457800E4002C /* MyPhotoLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPhotoLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CAEBE3C1983457800E4002C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3CAEBE3D1983457800E4002C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -116,6 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C76787119A177A30039D18A /* Security.framework in Frameworks */,
 				3CFA3CA21989BAFC005224F2 /* CoreGraphics.framework in Frameworks */,
 				3C064F8B19885DD0003BA399 /* CoreData.framework in Frameworks */,
 				3C67D6DD19846BF40043213D /* AssetsLibrary.framework in Frameworks */,
@@ -166,6 +172,7 @@
 		3CAEBE2F1983457700E4002C = {
 			isa = PBXGroup;
 			children = (
+				3C76787019A177A30039D18A /* Security.framework */,
 				3CFA3CA11989BAFC005224F2 /* CoreGraphics.framework */,
 				3C064F8A19885DD0003BA399 /* CoreData.framework */,
 				3C67D6DC19846BF40043213D /* AssetsLibrary.framework */,
@@ -243,6 +250,8 @@
 		3CFA3C9D19896451005224F2 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				3C76786D19A1775E0039D18A /* KeychainItemWrapper.h */,
+				3C76786E19A1775E0039D18A /* KeychainItemWrapper.m */,
 				3C18B362198702CB00EAA012 /* PasswordViewController.m */,
 				3C18B361198702CB00EAA012 /* PasswordViewController.h */,
 			);
@@ -319,6 +328,9 @@
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = 7G78W2P3N5;
 						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 0;
+							};
 							com.apple.iCloud = {
 								enabled = 1;
 							};
@@ -395,6 +407,7 @@
 				3CD287B9199BE50600502FC9 /* SelectPhotoViewController.m in Sources */,
 				3C67D6E019847FCF0043213D /* RBLibraryTableViewCell.m in Sources */,
 				3C064F9319888B79003BA399 /* RBGroupTableViewCell.m in Sources */,
+				3C76786F19A1775E0039D18A /* KeychainItemWrapper.m in Sources */,
 				3C18B363198702CB00EAA012 /* PasswordViewController.m in Sources */,
 				3C337642199C4D55001029A8 /* CDGroupCell.m in Sources */,
 				3C064F9019885EDB003BA399 /* CoreDataHelper.m in Sources */,

@@ -22,11 +22,41 @@
 @implementation CDDetailViewController
 
 - (void)viewDidLoad {
+    
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    [self popViewControllerWhenBackgroundIsTouhed];
+    [self.photoScrollView setDelegate:(id)self];
+    
+}
+
+#pragma mark - interaction
+
+- (void)popViewControllerWhenBackgroundIsTouhed {
     if (debug == 1) {
         NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
     }
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(popImage)];
+    [tgr setCancelsTouchesInView:NO];
+    [self.view addGestureRecognizer:tgr];
+    
+}
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+    return [scrollView viewWithTag:999];
+}
+
+- (void)popImage {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (void)viewDidAppear:(BOOL)animated{
+    
+    if (debug == 1) {
+        NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
+    }
+    self.photoView.image = self.displayPhoto;
+    NSString *dateString = [NSDateFormatter localizedStringFromDate:self.displayDate dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterNoStyle];
+    self.navigationItem.title = dateString;
+    /*
     CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
     if (![self.photoID isTemporaryID]) {
         Photos *photoToDisplay = (Photos *)[cdh.context objectWithID:self.photoID];
@@ -36,8 +66,7 @@
     } else {
         NSLog(@"Couldn't get photo from temp ID");
     }
-    
-    
+     */
 }
 
 - (void)didReceiveMemoryWarning {
@@ -93,6 +122,7 @@
         } else {
             NSLog(@"Cancled Delete");
         }
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 @end

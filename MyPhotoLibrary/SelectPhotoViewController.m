@@ -42,6 +42,25 @@
 }
 @end
 
+@implementation CIImage (Convenience)
+
+- (NSData *)aapl_jpegRepresentationWithCompressionQuality:(CGFloat)compressionQuality {
+    static CIContext *ciContext = nil;
+    if (!ciContext) {
+        EAGLContext *eaglContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+        ciContext = [CIContext contextWithEAGLContext:eaglContext];
+    }
+    CGImageRef outputImageRef = [ciContext createCGImage:self fromRect:[self extent]];
+    UIImage *uiImage = [[UIImage alloc] initWithCGImage:outputImageRef scale:1.0 orientation:UIImageOrientationUp];
+    if (outputImageRef) {
+        CGImageRelease(outputImageRef);
+    }
+    NSData *jpegRepresentation = UIImageJPEGRepresentation(uiImage, compressionQuality);
+    return jpegRepresentation;
+}
+
+@end
+
 
 @interface SelectPhotoViewController () <PHPhotoLibraryChangeObserver>
 @property (strong) IBOutlet UIBarButtonItem *addButton;
@@ -111,6 +130,7 @@ static CGSize AssetGridThumbnailSize;
     AssetGridThumbnailSize = CGSizeMake(cellSize.width * scale, cellSize.height * scale);
     
     [self.collectionView setAllowsMultipleSelection:NO];
+    
     
     if (!self.assetCollection || [self.assetCollection canPerformEditOperation:PHCollectionEditOperationAddContent]) {
         self.navigationItem.rightBarButtonItem = self.addButton;
@@ -433,13 +453,14 @@ static CGSize AssetGridThumbnailSize;
         
         Photos *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:@"Photos" inManagedObjectContext:cdh.context];
         
-        CGSize size = CGSizeMake(600.0, 600.0);
+        CGSize size = CGSizeMake(400.0, 400.0);
         
         [self.imageManager requestImageForAsset:asset
                                      targetSize:size
                                     contentMode:PHImageContentModeAspectFill
                                         options:nil
                                   resultHandler:^(UIImage *result, NSDictionary *info) {
+                                      
                                       newPhoto.photo =  UIImageJPEGRepresentation(result, 1.0);
                                   }];
     

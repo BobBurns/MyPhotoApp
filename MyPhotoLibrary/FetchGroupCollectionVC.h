@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
 
 @interface FetchGroupCollectionVC : UICollectionViewController
 
 @property (nonatomic, strong) NSArray *resultArray;
+@property (strong, nonatomic) NSFetchedResultsController *frc;
 
 - (void)performFetch;
 

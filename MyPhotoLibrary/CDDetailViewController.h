@@ -14,6 +14,9 @@
 @property (nonatomic, strong) NSManagedObjectID *photoID;
 @property (nonatomic, strong) IBOutlet UIImageView *photoView;
 @property (nonatomic, retain) UIAlertView *deleteAlertView;
+@property (nonatomic, strong) UIImage *displayPhoto;
+@property (nonatomic, strong) NSDate *displayDate;
+@property (strong, nonatomic) IBOutlet UIScrollView *photoScrollView;
 
 - (IBAction)handleDeletePhoto:(id)sender;
 

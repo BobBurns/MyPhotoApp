@@ -7,12 +7,26 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CoreDataHelper.h"
+#import <Security/Security.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+#import "CoreDataHelper.h"
+#import "KeychainItemWrapper.h"
+
+
+@import LocalAuthentication;
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong, readonly) CoreDataHelper *coreDataHelper;
+
+@property (nonatomic, strong) UITextField *passText;
+@property (nonatomic, strong) UITextField *pinField;
+@property (nonatomic, strong) UITextField *repeatPinField;
+@property (nonatomic, strong) KeychainItemWrapper *pinWrapper;
+
+
+@property (nonatomic, strong) UIAlertView *noTouchAlert;
 
 - (CoreDataHelper *)cdh;
 

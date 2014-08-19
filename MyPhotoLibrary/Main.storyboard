@@ -155,7 +155,7 @@
         <scene sceneID="tg8-v3-A9n">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jOI-Rf-h9F" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Import" id="0vn-4a-bub"/>
+                    <tabBarItem key="tabBarItem" title="Import" image="PLImport" id="0vn-4a-bub"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Uop-rR-ktp">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -228,12 +228,12 @@
         <scene sceneID="GnQ-Vn-Fe1">
             <objects>
                 <collectionViewController id="QZy-Jy-dfR" customClass="FetchGroupCollectionVC" sceneMemberID="viewController">
-                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="Y5R-Kv-5Fs">
+                    <collectionView key="view" clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" dataMode="prototypes" id="Y5R-Kv-5Fs">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="A1a-p0-jgj">
-                            <size key="itemSize" width="89" height="90"/>
+                            <size key="itemSize" width="80" height="80"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -243,11 +243,11 @@
                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="89" height="90"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Nab-eZ-yTj">
-                                            <rect key="frame" x="0.0" y="0.0" width="89" height="90"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                         </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -275,7 +275,7 @@
             </objects>
             <point key="canvasLocation" x="1016" y="-261"/>
         </scene>
-        <!--Title-->
+        <!--Detail View Controller-->
         <scene sceneID="YDR-le-ts5">
             <objects>
                 <viewController id="s4S-ne-mvY" customClass="CDDetailViewController" sceneMemberID="viewController">
@@ -287,30 +287,37 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Unq-mK-9GV">
-                                <rect key="frame" x="0.0" y="72" width="600" height="480"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" minimumZoomScale="-5" maximumZoomScale="10" translatesAutoresizingMaskIntoConstraints="NO" id="Baj-pv-Hf1">
+                                <rect key="frame" x="0.0" y="64" width="600" height="600"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" tag="999" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aeu-Ll-mP4">
+                                        <rect key="frame" x="100" y="100" width="400" height="400"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="400" id="Bny-wN-gPd"/>
+                                            <constraint firstAttribute="height" constant="400" id="xaW-Kx-wfz"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="435" id="5tt-WT-YNi"/>
-                                    <constraint firstAttribute="height" constant="388" id="UiC-AB-Isy"/>
+                                    <constraint firstItem="aeu-Ll-mP4" firstAttribute="width" secondItem="Baj-pv-Hf1" secondAttribute="width" id="xgI-f7-apM"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="5tt-WT-YNi"/>
-                                        <exclude reference="UiC-AB-Isy"/>
+                                        <exclude reference="xgI-f7-apM"/>
                                     </mask>
                                 </variation>
-                            </imageView>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="Unq-mK-9GV" secondAttribute="trailing" constant="-16" id="HcC-HO-0XM"/>
-                            <constraint firstItem="Unq-mK-9GV" firstAttribute="leading" secondItem="HgR-pz-gNy" secondAttribute="leadingMargin" constant="-16" id="a7B-jM-Z42"/>
-                            <constraint firstItem="ZgA-pF-GxO" firstAttribute="top" secondItem="Unq-mK-9GV" secondAttribute="bottom" constant="4" id="oCf-yG-LAm"/>
-                            <constraint firstItem="Unq-mK-9GV" firstAttribute="top" secondItem="Q0e-7u-4QW" secondAttribute="bottom" constant="8" id="zjs-qc-pNV"/>
+                            <constraint firstItem="Baj-pv-Hf1" firstAttribute="top" secondItem="Q0e-7u-4QW" secondAttribute="bottom" id="85q-SQ-J30"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="Baj-pv-Hf1" secondAttribute="bottom" constant="-64" id="SlE-TH-JXU"/>
+                            <constraint firstItem="Baj-pv-Hf1" firstAttribute="leading" secondItem="HgR-pz-gNy" secondAttribute="leadingMargin" constant="-16" id="h2F-B8-0Mp"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Baj-pv-Hf1" secondAttribute="trailing" constant="-16" id="isO-lB-O33"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Title" id="ecX-ds-eLd">
+                    <navigationItem key="navigationItem" id="ecX-ds-eLd">
                         <barButtonItem key="rightBarButtonItem" systemItem="trash" id="rbs-tF-A0Z">
                             <connections>
                                 <action selector="handleDeletePhoto:" destination="s4S-ne-mvY" id="OOG-1n-KJJ"/>
@@ -319,7 +326,8 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="photoView" destination="Unq-mK-9GV" id="Y6n-eR-ym4"/>
+                        <outlet property="photoScrollView" destination="Baj-pv-Hf1" id="wW3-am-yLa"/>
+                        <outlet property="photoView" destination="aeu-Ll-mP4" id="HMy-a4-O1f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZEK-Km-mkf" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -385,11 +393,11 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dOb-To-BhU">
+                            <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dOb-To-BhU">
                                 <rect key="frame" x="0.0" y="511" width="600" height="44"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Wxb-ra-7Gy"/>
-                                    <barButtonItem title="copy items" id="FTH-ad-fnR">
+                                    <barButtonItem title="import" id="FTH-ad-fnR">
                                         <connections>
                                             <action selector="makePhotoHidden:" destination="dsD-fA-fj7" id="ekB-lL-a3Q"/>
                                         </connections>
@@ -425,7 +433,7 @@
         <scene sceneID="pWg-fS-dfg">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="y2t-1E-S77" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="My Photos" id="8k8-WT-aIL"/>
+                    <tabBarItem key="tabBarItem" title="My Photos" image="mpbook" id="8k8-WT-aIL"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="6eC-td-KxJ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -451,8 +459,8 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="y2t-1E-S77" kind="relationship" relationship="viewControllers" id="aNd-zK-haA"/>
                         <segue destination="jOI-Rf-h9F" kind="relationship" relationship="viewControllers" id="8dF-9G-yWE"/>
+                        <segue destination="y2t-1E-S77" kind="relationship" relationship="viewControllers" id="aNd-zK-haA"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wi7-yg-s9B" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -460,6 +468,10 @@
             <point key="canvasLocation" x="-432" y="-606"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="PLImport" width="30" height="25"/>
+        <image name="mpbook" width="30" height="25"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="D9s-ak-g8A"/>
     </inferredMetricsTieBreakers>
