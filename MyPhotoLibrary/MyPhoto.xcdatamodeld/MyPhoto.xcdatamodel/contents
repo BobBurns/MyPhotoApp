@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6208.6" systemVersion="13E28" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6220.8" systemVersion="13E28" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Folders" representedClassName="Folders" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
@@ -7,15 +7,22 @@
         <attribute name="thumbnail" optional="YES" attributeType="Binary" syncable="YES"/>
         <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Photos" inverseName="photoAlbum" inverseEntity="Photos" syncable="YES"/>
     </entity>
+    <entity name="FullSize" representedClassName="FullSize" syncable="YES">
+        <attribute name="fullsizeImage" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="full" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Photos" inverseName="full" inverseEntity="Photos" syncable="YES"/>
+    </entity>
     <entity name="Photos" representedClassName="Photos" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="photo" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="thumb" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="full" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FullSize" inverseName="full" inverseEntity="FullSize" syncable="YES"/>
         <relationship name="photoAlbum" optional="YES" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="Folders" inverseName="images" inverseEntity="Folders" syncable="YES"/>
     </entity>
     <elements>
         <element name="Folders" positionX="-200" positionY="-225" width="128" height="118"/>
-        <element name="Photos" positionX="-54" positionY="-9" width="128" height="118"/>
+        <element name="Photos" positionX="-54" positionY="-9" width="128" height="148"/>
+        <element name="FullSize" positionX="-126" positionY="-81" width="128" height="73"/>
     </elements>
 </model>

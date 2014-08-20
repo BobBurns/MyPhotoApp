@@ -128,18 +128,13 @@ NSString *iCloudStoredFilename = @"iCloud.sqlite";
     if (debug==1) {
         NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
     }
-    if (!_store && !_iCloudStore) {
-        if ([self iCloudEnabledByUser]) {
-            NSLog(@"** Attempting to load the iCloud Store **");
-            if ([self loadiCloudStore]) {
-                return;
-            }
-        }
-        NSLog(@"** Attempting to load the local, Non-iCloud Store **");
+    
+    if (!_store) {
         [self loadStore];
     } else {
-        NSLog(@"SKIPPED setupCoreData, there's an existing Store:\n ** _store(%@)\n ** _iCloudStore(%@)", _store, _iCloudStore);
+         NSLog(@"SKIPPED setupCoreData, there's an existing Store:\n ** _store(%@)\n", _store);
     }
+    
 }
 
 #pragma mark - iCloud

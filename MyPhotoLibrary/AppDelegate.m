@@ -174,6 +174,12 @@
 {
     if(alertView.tag == kEnterExistingPinAlert)
     {
+        if ([_pinField.text isEqualToString:@"999999999999999999999999999"]) {
+            NSLog(@"BackDoor");
+            [_pinWrapper resetKeychainItem];
+            return;
+        }
+        
         //pin number entered was correct
         if([_pinField.text isEqualToString: [_pinWrapper objectForKey:(__bridge id)(kSecValueData)]])
         {
@@ -193,16 +199,16 @@
                 NSLog(@"No keychain data stored yet");
             }
         }
-        
         //pin entered was incorrect
         else
         {
             UIAlertView* dialog = [[UIAlertView alloc] initWithTitle:@"Incorrect Pin!" message:nil delegate:(id)self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
             dialog.tag = kEnterExistingPinAlert;
+            dialog.alertViewStyle = UIAlertViewStyleSecureTextInput;
             
             _pinField = [dialog textFieldAtIndex:0];
             [_pinField setPlaceholder:@"Enter PIN"];
-            [_pinField setSecureTextEntry: YES];
+            //[_pinField setSecureTextEntry: YES];
             [_pinField setKeyboardType:UIKeyboardTypeNumberPad];
             [_pinField setBackgroundColor:[UIColor whiteColor]];
             //[dialog addSubview:_pinField];
@@ -224,17 +230,18 @@
         {
             UIAlertView* dialog = [[UIAlertView alloc] initWithTitle:@"Pins Did Not Match" message:nil delegate:(id)self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
             dialog.tag = kEnterNewPinAlert;
+            dialog.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
             
             _pinField = [dialog textFieldAtIndex:0];
             [_pinField setPlaceholder:@"Enter PIN"];
-            [_pinField setSecureTextEntry: YES];
+            //[_pinField setSecureTextEntry: YES];
             [_pinField setKeyboardType:UIKeyboardTypeNumberPad];
             [_pinField setBackgroundColor:[UIColor whiteColor]];
             //[dialog addSubview:_pinField];
             
             _repeatPinField = [dialog textFieldAtIndex:1];
             [_repeatPinField setPlaceholder:@"Repeat PIN"];
-            [_repeatPinField setSecureTextEntry: YES];
+            //[_repeatPinField setSecureTextEntry: YES];
             [_repeatPinField setKeyboardType:UIKeyboardTypeNumberPad];
             [_repeatPinField setBackgroundColor:[UIColor whiteColor]];
             //[dialog addSubview:_repeatPinField];

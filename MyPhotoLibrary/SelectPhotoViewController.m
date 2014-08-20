@@ -13,6 +13,9 @@
 #import "CoreDataHelper.h"
 #import "Folders.h"
 #import "Photos.h"
+#import "FullSize.h"
+
+#import "Faulter.h"
 
 @import Photos;
 @import CoreLocation;
@@ -129,7 +132,7 @@ static CGSize AssetGridThumbnailSize;
     CGSize cellSize = ((UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout).itemSize;
     AssetGridThumbnailSize = CGSizeMake(cellSize.width * scale, cellSize.height * scale);
     
-    [self.collectionView setAllowsMultipleSelection:NO];
+    [self.collectionView setAllowsMultipleSelection:YES];
     
     
     if (!self.assetCollection || [self.assetCollection canPerformEditOperation:PHCollectionEditOperationAddContent]) {
@@ -436,7 +439,7 @@ static CGSize AssetGridThumbnailSize;
         if (success) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSLog(@"dismiss view here");
-                [[self navigationController] popViewControllerAnimated:YES];
+                //[[self navigationController] popViewControllerAnimated:YES];
                 
             });
         } else {
@@ -448,12 +451,15 @@ static CGSize AssetGridThumbnailSize;
     
     
     NSMutableArray *assets = [[NSMutableArray alloc] initWithArray:[self assetsAtIndexPaths:self.collectionView.indexPathsForSelectedItems]];
+    
+    CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
+    
+    
     for (PHAsset *asset in assets) {
-        CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
-        
         Photos *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:@"Photos" inManagedObjectContext:cdh.context];
+        FullSize *fullsize = [NSEntityDescription insertNewObjectForEntityForName:@"FullSize" inManagedObjectContext:cdh.context];
         
-        CGSize size = CGSizeMake(400.0, 400.0);
+        CGSize size = CGSizeMake(200.0, 200.0);
         
         [self.imageManager requestImageForAsset:asset
                                      targetSize:size
@@ -461,17 +467,55 @@ static CGSize AssetGridThumbnailSize;
                                         options:nil
                                   resultHandler:^(UIImage *result, NSDictionary *info) {
                                       
-                                      newPhoto.photo =  UIImageJPEGRepresentation(result, 1.0);
+                                      fullsize.fullsizeImage = UIImageJPEGRepresentation(result, .8);
+                                      //newPhoto.photo =  UIImageJPEGRepresentation(result, .9);
+                                      
+                                      CGSize size = CGSizeMake(60.0, 60.0);
+                                      UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
+                                      [result drawInRect:CGRectMake(0, 0, size.width, size.height)];
+                                      UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
+                                      UIGraphicsEndImageContext();
+                                       
+                                    
+                                      newPhoto.thumb = UIImageJPEGRepresentation(thumbnail, 1);
+                                      
                                   }];
+        
     
         newPhoto.date = [NSDate date];
         //newPhoto.name = asset.location.description;
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
-                                                            object:nil];
+        
+        newPhoto.full = fullsize;
         
         [_currentFolder addImagesObject:newPhoto];
-        [cdh backgroundSaveContext];
         
+        /*
+        size = CGSizeMake(200.0, 200.0);
+        
+        [self.imageManager requestImageForAsset:asset
+                                     targetSize:size
+                                    contentMode:PHImageContentModeAspectFill
+                                        options:nil
+                                  resultHandler:^(UIImage *result, NSDictionary *info) {
+                                      
+                                      //newPhoto.photo =  UIImageJPEGRepresentation(result, .9);
+         
+                                       CGSize size = CGSizeMake(80.0, 80.0);
+                                       UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
+                                       [result drawInRect:CGRectMake(0, 0, size.width, size.height)];
+                                       UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
+                                       UIGraphicsEndImageContext();
+                                       
+         
+                                      newPhoto.full.fullsizeImage = UIImageJPEGRepresentation(result, .9);
+                                      
+                                  }];
+    */
+        [cdh backgroundSaveContext];
+        [Faulter faultObjectWithID:newPhoto.full.objectID inContext:cdh.context];
+        [Faulter faultObjectWithID:newPhoto.objectID inContext:cdh.context];
+        
+        /*
         [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
             //PHAssetChangeRequest *request = [PHAssetChangeRequest changeRequestForAsset:asset];
             if ([asset canPerformEditOperation:PHAssetEditOperationDelete]) {
@@ -484,7 +528,11 @@ static CGSize AssetGridThumbnailSize;
             
             
         } completionHandler:completionHandler];
+         */
     }
+    
+   // [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
+      //                                                  object:nil];
 }
 
 @end

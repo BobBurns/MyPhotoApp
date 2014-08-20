@@ -98,6 +98,11 @@
     [self.deleteAlertView show];
     
 }
+- (void)dealloc {
+    _photoView.image = nil;
+    _photoView = nil;
+    
+}
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (debug == 1) {
         NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));

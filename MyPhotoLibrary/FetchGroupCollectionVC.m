@@ -14,15 +14,20 @@
 #import "CoreDataHelper.h"
 #import "Folders.h"
 #import "Photos.h"
+#import "FullSize.h"
+
 #import "Faulter.h"
+#import "CDMainVC.h"
 
 #import "CDGroupCell.h"
 
 #define debug 1
 
 @interface FetchGroupCollectionVC ()
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activity;
 
 @property (nonatomic, strong) NSManagedObjectID *selectedPhotoID;
+@property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
 
 @end
 
@@ -30,7 +35,14 @@
 
 static NSString * const reuseIdentifier = @"Cell";
 
+- (void)viewWillAppear:(BOOL)animated {
+    
+}
+
 - (void)viewDidLoad {
+    if (debug == 1) {
+        NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
+    }
     [super viewDidLoad];
     
     // Uncomment the following line to preserve selection between presentations
@@ -45,14 +57,30 @@ static NSString * const reuseIdentifier = @"Cell";
                                                object:nil];
     self.collectionView.allowsMultipleSelection = NO;
     
+    //progress
+    self.indicatorView = [[UIActivityIndicatorView alloc]
+                          initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+    self.indicatorView.hidden = NO;
+    self.indicatorView.hidesWhenStopped = YES;
+    [self.indicatorView startAnimating];
+    
+    UIBarButtonItem* spinner = [[UIBarButtonItem alloc] initWithCustomView: self.indicatorView];
+    CDMainVC *mvc = [[CDMainVC alloc] init];
+    mvc.navigationItem.rightBarButtonItem = spinner;
+    
     // Fetch objects
     [self performFetch];
+    
+    [self.indicatorView stopAnimating];
     
     
 }
 - (void)viewDidAppear:(BOOL)animated {
-    self.navigationItem.title = @"Photos";
+    
+    self.navigationItem.title = @"PhotoSafe";
     if (!_resultArray) {
+        
+        
         [self performFetch];
     }
     
@@ -68,6 +96,9 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)performFetch {
+    if (debug == 1) {
+        NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
+    }
     NSError *error = nil;
     CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
     
@@ -120,6 +151,24 @@ static NSString * const reuseIdentifier = @"Cell";
     */
     
     [cdh.context performBlockAndWait:^{
+        /*
+        NSLog(@"get main queue");
+        UIView *overlay = [[UIView alloc] init];
+        overlay = self.view;
+        _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        _indicatorView.layer.cornerRadius = 10;
+        CGRect f = _indicatorView.frame;
+        f = CGRectInset(f, -10, -10);
+        _indicatorView.frame = f;
+        
+        CGRect cf = self.view.frame;
+        cf = [self.view convertRect:cf fromView:self.view];
+        _indicatorView.center = CGPointMake(CGRectGetMidX(cf), CGRectGetMidY(cf));
+        _indicatorView.tag = 1001;
+        [overlay addSubview:_indicatorView];
+        [_indicatorView startAnimating];
+        */
+        NSLog(@"performing block");
         NSError *fetchError = nil;
         _resultArray = [cdh.context executeFetchRequest:request error:&fetchError];
         
@@ -131,6 +180,8 @@ static NSString * const reuseIdentifier = @"Cell";
             
         }
     }];
+    
+    
     
     [self.collectionView reloadData]; // incase of any changes
     
@@ -161,7 +212,9 @@ static NSString * const reuseIdentifier = @"Cell";
         
         CDDetailViewController *detailVC = segue.destinationViewController;
         //[self.collectionView reloadData];
-        detailVC.displayPhoto = [UIImage imageWithData:selPhoto.photo];
+        
+        NSData *fulldata = selPhoto.full.fullsizeImage;
+        detailVC.displayPhoto = [UIImage imageWithData:fulldata];
         detailVC.photoID = selPhoto.objectID;
         detailVC.displayDate = selPhoto.date;
         
@@ -196,7 +249,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     Photos *photoObject = [self.resultArray objectAtIndex:indexPath.row];
     //UIImage *groupImage = [UIImage imageWithData:photoObject.photo];
-    UIImage *thumbImage = [self createThumbnail:[UIImage imageWithData:photoObject.photo]];
+    UIImage *thumbImage = [UIImage imageWithData:photoObject.thumb];
     
     myCell.thumbnailImage = thumbImage;
     // try to increase fps
