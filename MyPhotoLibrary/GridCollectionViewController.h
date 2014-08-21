@@ -13,6 +13,8 @@
 
 @property (strong) PHFetchResult *assetsFetchResults;
 @property (strong) PHAssetCollection *assetCollection;
+@property (strong, nonatomic) NSString *gridFolderName; // passing it along
+
 @property (strong, nonatomic) IBOutlet UIImageView *checkView;
 @property (strong, nonatomic) IBOutlet UINavigationItem *myNavigationItem;
 

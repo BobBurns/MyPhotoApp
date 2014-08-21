@@ -17,6 +17,8 @@
 
 #import "Faulter.h"
 
+#define debug 1
+
 @import Photos;
 @import CoreLocation;
 
@@ -80,8 +82,13 @@
 static NSString * const CellReuseIdentifier = @"Cell";
 static CGSize AssetGridThumbnailSize;
 
+#pragma mark - views
+
 - (void)awakeFromNib
 {
+    if (debug == 1) {
+        NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
+    }
     self.imageManager = [[PHCachingImageManager alloc] init];
     [self resetCachedAssets];
     [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
@@ -94,7 +101,14 @@ static CGSize AssetGridThumbnailSize;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    if (debug == 1) {
+        NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
+    }
     [super viewWillAppear:animated];
+    
+    UIBarButtonItem *importButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(moveItems)];
+    
+    self.navigationItem.rightBarButtonItem = importButton;
     
     // get default folder
     NSError *error = nil;
@@ -103,27 +117,19 @@ static CGSize AssetGridThumbnailSize;
     
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
     [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name == 'defaultFolder'"];
+    NSString *folderRequest = self.selectFolderName;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name == %@", folderRequest];
     [request setPredicate:predicate];
     NSArray *results = [cdh.context executeFetchRequest:request error:&error];
     
     if ([results count] == 0) {
         NSLog(@"Error fetching folders: %@ '%@'", error, error.description);
-        NSLog(@"inserting defaultFolder");
-        _currentFolder = [NSEntityDescription insertNewObjectForEntityForName:@"Folders"
-                                                       inManagedObjectContext:cdh.context];
-        
-        _currentFolder.name = @"defaultFolder";
+        //self.currentFolder = [NSEntityDescription insertNewObjectForEntityForName:@"Folders" inManagedObjectContext:cdh.context];
+       // _currentFolder.name = self.selectFolderName;
+       // [cdh backgroundSaveContext];
         
     } else {
-        for (int i = 0; i < [results count]; ++i) {
-            Folders *object = [results objectAtIndex:i];
-            if ([object.name isEqualToString:@"defaultFolder"]) {
-                NSLog(@"default Folder exists");
-                _currentFolder = object;
-                break;
-            }
-        }
+        _currentFolder = [results lastObject];
         
     }
     
@@ -134,12 +140,13 @@ static CGSize AssetGridThumbnailSize;
     
     [self.collectionView setAllowsMultipleSelection:YES];
     
-    
+    /*
     if (!self.assetCollection || [self.assetCollection canPerformEditOperation:PHCollectionEditOperationAddContent]) {
         self.navigationItem.rightBarButtonItem = self.addButton;
     } else {
         self.navigationItem.rightBarButtonItem = nil;
     }
+     */
 }
 
 
@@ -147,6 +154,14 @@ static CGSize AssetGridThumbnailSize;
 {
     [super viewDidAppear:animated];
     [self updateCachedAssets];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    
+    for (NSIndexPath *index in self.collectionView.indexPathsForSelectedItems) {
+        [self.collectionView deselectItemAtIndexPath:index animated:NO];
+    }
+    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -246,19 +261,7 @@ static CGSize AssetGridThumbnailSize;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
     NSLog(@"Item selected at indexPath: %@",indexPath);
-    /*
-     
-     if (selectedCell.isChecked) {
-     selectedCell.isChecked = NO;
-     selectedCell.checkMarkView.hidden = YES;
-     } else
-     {
-     selectedCell.isChecked = YES;
-     selectedCell.checkMarkView.hidden = NO;
-     }
-     [self.collectionView reloadData];
-     */
-    
+    self.navigationItem.title = [NSString stringWithFormat:@"%d items", self.collectionView.indexPathsForSelectedItems.count];
 }
 
 #pragma mark - Asset Caching
@@ -408,33 +411,73 @@ static CGSize AssetGridThumbnailSize;
     
 }
 - (void)moveItems {
-    void (^completionHandler)(BOOL, NSError *) = ^(BOOL success, NSError *error) {
-        if (success) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[self navigationController] popViewControllerAnimated:YES];
-            });
-        } else {
-            NSLog(@"Error: %@", error);
-        }
-    };
-    
-    
     NSMutableArray *assets = [[NSMutableArray alloc] initWithArray:[self assetsAtIndexPaths:self.collectionView.indexPathsForSelectedItems]];
+    
+    CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
+    
+    
     for (PHAsset *asset in assets) {
-        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-            PHAssetChangeRequest *request = [PHAssetChangeRequest changeRequestForAsset:asset];
-            if ([asset canPerformEditOperation:PHAssetEditOperationProperties]) {
-                request.hidden = YES;
-                NSLog(@"hiding asset");
-            } else {
-                NSLog(@"can't edit asset");
-            }
-            
-        } completionHandler:completionHandler];
+        Photos *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:@"Photos" inManagedObjectContext:cdh.context];
+        FullSize *fullsize = [NSEntityDescription insertNewObjectForEntityForName:@"FullSize" inManagedObjectContext:cdh.context];
+        
+        CGSize size = CGSizeMake(200.0, 200.0);
+        
+        [self.imageManager requestImageForAsset:asset
+                                     targetSize:size
+                                    contentMode:PHImageContentModeAspectFill
+                                        options:nil
+                                  resultHandler:^(UIImage *result, NSDictionary *info) {
+                                      
+                                      fullsize.fullsizeImage = UIImageJPEGRepresentation(result, .8);
+                                      //newPhoto.photo =  UIImageJPEGRepresentation(result, .9);
+                                      
+                                      CGSize size = CGSizeMake(60.0, 60.0);
+                                      UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
+                                      [result drawInRect:CGRectMake(0, 0, size.width, size.height)];
+                                      UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
+                                      UIGraphicsEndImageContext();
+                                      
+                                      
+                                      newPhoto.thumb = UIImageJPEGRepresentation(thumbnail, 1);
+                                      
+                                  }];
+        
+        
+        newPhoto.date = [NSDate date];
+        //newPhoto.name = asset.location.description;
+        
+        newPhoto.full = fullsize;
+        
+        [_currentFolder addImagesObject:newPhoto];
+        
+        [cdh backgroundSaveContext];
+        [Faulter faultObjectWithID:newPhoto.full.objectID inContext:cdh.context];
+        [Faulter faultObjectWithID:newPhoto.objectID inContext:cdh.context];
+        
+        /*
+         [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+         //PHAssetChangeRequest *request = [PHAssetChangeRequest changeRequestForAsset:asset];
+         if ([asset canPerformEditOperation:PHAssetEditOperationDelete]) {
+         
+         [PHAssetChangeRequest deleteAssets:@[asset]];
+         NSLog(@"deleting asset");
+         } else {
+         NSLog(@"can't edit asset");
+         }
+         
+         
+         } completionHandler:completionHandler];
+         */
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
+                                                        object:nil];
+    
+    [[self navigationController] popViewControllerAnimated:YES];
 }
 
 - (IBAction)makePhotoHidden:(id)sender {
+    /* if you need it later
     void (^completionHandler)(BOOL, NSError *) = ^(BOOL success, NSError *error) {
         if (success) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -446,7 +489,7 @@ static CGSize AssetGridThumbnailSize;
             NSLog(@"Error: %@", error);
         }
     };
-    
+    */
     //get default folder
     
     
@@ -489,31 +532,11 @@ static CGSize AssetGridThumbnailSize;
         
         [_currentFolder addImagesObject:newPhoto];
         
-        /*
-        size = CGSizeMake(200.0, 200.0);
-        
-        [self.imageManager requestImageForAsset:asset
-                                     targetSize:size
-                                    contentMode:PHImageContentModeAspectFill
-                                        options:nil
-                                  resultHandler:^(UIImage *result, NSDictionary *info) {
-                                      
-                                      //newPhoto.photo =  UIImageJPEGRepresentation(result, .9);
-         
-                                       CGSize size = CGSizeMake(80.0, 80.0);
-                                       UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
-                                       [result drawInRect:CGRectMake(0, 0, size.width, size.height)];
-                                       UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
-                                       UIGraphicsEndImageContext();
-                                       
-         
-                                      newPhoto.full.fullsizeImage = UIImageJPEGRepresentation(result, .9);
-                                      
-                                  }];
-    */
         [cdh backgroundSaveContext];
         [Faulter faultObjectWithID:newPhoto.full.objectID inContext:cdh.context];
         [Faulter faultObjectWithID:newPhoto.objectID inContext:cdh.context];
+        
+        [[self navigationController] popViewControllerAnimated:YES];
         
         /*
         [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
@@ -531,8 +554,8 @@ static CGSize AssetGridThumbnailSize;
          */
     }
     
-   // [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
-      //                                                  object:nil];
+    //[[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
+      //                                                 object:nil];
 }
 
 @end

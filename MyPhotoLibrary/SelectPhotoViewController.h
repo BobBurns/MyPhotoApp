@@ -13,6 +13,7 @@
 
 @property (strong) PHFetchResult *assetsFetchResults;
 @property (strong) PHAssetCollection *assetCollection;
+@property (nonatomic, strong) NSString *selectFolderName;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 
 

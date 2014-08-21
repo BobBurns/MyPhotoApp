@@ -8,7 +8,9 @@
 // Using Apple Source Code Thank You
 
 #import "LibraryRootViewController.h"
-#import "GridCollectionViewController.h"
+#import "SelectPhotoViewController.h"
+
+#define debug 1
 
 
 @import Photos;
@@ -33,6 +35,9 @@ static NSString * const CollectionSegue = @"showCollection";
 
 - (void)awakeFromNib
 {
+    if (debug == 1) {
+        NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
+    }
     //PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
     PHFetchResult *topLevelUserCollections = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
     self.collectionsFetchResults = @[topLevelUserCollections];
@@ -50,16 +55,22 @@ static NSString * const CollectionSegue = @"showCollection";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    
+    if (debug == 1) {
+        NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
+    }
     if ([segue.identifier isEqualToString:AllPhotosSegue]) {
-        GridCollectionViewController *gridViewController = segue.destinationViewController;
+        SelectPhotoViewController *selectViewController = segue.destinationViewController;
+        NSString *folderName = self.libraryFolderName;
+        [selectViewController setSelectFolderName:folderName];
         // Fetch all assets, sorted by date created.
         PHFetchOptions *options = [[PHFetchOptions alloc] init];
         options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-        gridViewController.assetsFetchResults = [PHAsset fetchAssetsWithOptions:options];
+        selectViewController.assetsFetchResults = [PHAsset fetchAssetsWithOptions:options];
         
     } else if ([segue.identifier isEqualToString:CollectionSegue]) {
-        GridCollectionViewController *gridViewController = segue.destinationViewController;
+        SelectPhotoViewController *selectViewController = segue.destinationViewController;
+        NSString *folderName = self.libraryFolderName;
+        [selectViewController setSelectFolderName:folderName];
         
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
         PHFetchResult *fetchResult = self.collectionsFetchResults[indexPath.section - 1];
@@ -67,8 +78,8 @@ static NSString * const CollectionSegue = @"showCollection";
         if ([collection isKindOfClass:[PHAssetCollection class]]) {
             PHAssetCollection *assetCollection = (PHAssetCollection *)collection;
             PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:nil];
-            gridViewController.assetsFetchResults = assetsFetchResult;
-            gridViewController.assetCollection = assetCollection;
+            selectViewController.assetsFetchResults = assetsFetchResult;
+            selectViewController.assetCollection = assetCollection;
         }
     }
     

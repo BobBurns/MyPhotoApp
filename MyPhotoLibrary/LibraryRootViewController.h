@@ -12,6 +12,6 @@
 
 @interface LibraryRootViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
-
+@property (nonatomic, strong) NSString *libraryFolderName;
 
 @end

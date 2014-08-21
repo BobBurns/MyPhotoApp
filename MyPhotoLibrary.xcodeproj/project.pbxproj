@@ -12,7 +12,6 @@
 		3C064F9019885EDB003BA399 /* CoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C064F8F19885EDB003BA399 /* CoreDataHelper.m */; };
 		3C064F9319888B79003BA399 /* RBGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C064F9219888B79003BA399 /* RBGroupTableViewCell.m */; };
 		3C18B363198702CB00EAA012 /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C18B362198702CB00EAA012 /* PasswordViewController.m */; };
-		3C18B36519872F6D00EAA012 /* password_test.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C18B36419872F6D00EAA012 /* password_test.png */; };
 		3C208B20199B0FF600BA9F68 /* LibraryRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C208B1F199B0FF600BA9F68 /* LibraryRootViewController.m */; };
 		3C208B23199B111700BA9F68 /* GridCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C208B22199B111700BA9F68 /* GridCollectionViewController.m */; };
 		3C208B26199B114100BA9F68 /* GridCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C208B25199B114100BA9F68 /* GridCollectionViewCell.m */; };
@@ -25,6 +24,7 @@
 		3C76787119A177A30039D18A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C76787019A177A30039D18A /* Security.framework */; };
 		3C94B04219A4EA1D0027201A /* FullSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C94B04119A4EA1D0027201A /* FullSize.m */; };
 		3C94B04519A4EA1D0027201A /* Photos.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C94B04419A4EA1D0027201A /* Photos.m */; };
+		3C94B04D19A52DE00027201A /* CDFolderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C94B04C19A52DE00027201A /* CDFolderTableViewController.m */; };
 		3CAEBE3E1983457800E4002C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE3D1983457800E4002C /* main.m */; };
 		3CAEBE411983457800E4002C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE401983457800E4002C /* AppDelegate.m */; };
 		3CAEBE441983457800E4002C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE431983457800E4002C /* ViewController.m */; };
@@ -63,7 +63,6 @@
 		3C064F9219888B79003BA399 /* RBGroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RBGroupTableViewCell.m; sourceTree = "<group>"; };
 		3C18B361198702CB00EAA012 /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
 		3C18B362198702CB00EAA012 /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
-		3C18B36419872F6D00EAA012 /* password_test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = password_test.png; path = ../../../../Desktop/password_test.png; sourceTree = "<group>"; };
 		3C208B1E199B0FF600BA9F68 /* LibraryRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryRootViewController.h; sourceTree = "<group>"; };
 		3C208B1F199B0FF600BA9F68 /* LibraryRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryRootViewController.m; sourceTree = "<group>"; };
 		3C208B21199B111700BA9F68 /* GridCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridCollectionViewController.h; sourceTree = "<group>"; };
@@ -88,6 +87,8 @@
 		3C94B04119A4EA1D0027201A /* FullSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullSize.m; sourceTree = "<group>"; };
 		3C94B04319A4EA1D0027201A /* Photos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photos.h; sourceTree = "<group>"; };
 		3C94B04419A4EA1D0027201A /* Photos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photos.m; sourceTree = "<group>"; };
+		3C94B04B19A52DE00027201A /* CDFolderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDFolderTableViewController.h; sourceTree = "<group>"; };
+		3C94B04C19A52DE00027201A /* CDFolderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDFolderTableViewController.m; sourceTree = "<group>"; };
 		3CAEBE381983457800E4002C /* MyPhotoLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPhotoLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CAEBE3C1983457800E4002C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3CAEBE3D1983457800E4002C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -208,7 +209,6 @@
 				3CFA3CA31989C1D8005224F2 /* CoreData ViewControllers */,
 				3CFA3C9D19896451005224F2 /* Other */,
 				3C064F8D19885E2C003BA399 /* Core Data Classes */,
-				3C18B36419872F6D00EAA012 /* password_test.png */,
 				3CAEBE3F1983457800E4002C /* AppDelegate.h */,
 				3CAEBE401983457800E4002C /* AppDelegate.m */,
 				3CAEBE421983457800E4002C /* ViewController.h */,
@@ -282,6 +282,8 @@
 				3C2119CE199D4C39002533B1 /* CDDetailViewController.m */,
 				3CE67EE719A3F46700E94CAA /* CDMainVC.h */,
 				3CE67EE819A3F46700E94CAA /* CDMainVC.m */,
+				3C94B04B19A52DE00027201A /* CDFolderTableViewController.h */,
+				3C94B04C19A52DE00027201A /* CDFolderTableViewController.m */,
 			);
 			name = "CoreData ViewControllers";
 			sourceTree = "<group>";
@@ -375,7 +377,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3C18B36519872F6D00EAA012 /* password_test.png in Resources */,
 				3CAEBE491983457800E4002C /* Images.xcassets in Resources */,
 				3CE67EEB19A3F4FF00E94CAA /* Main.storyboard in Resources */,
 			);
@@ -410,6 +411,7 @@
 				3CE04C1A198E554B0070E1B2 /* CoreDataGroupTVC.m in Sources */,
 				3C208B23199B111700BA9F68 /* GridCollectionViewController.m in Sources */,
 				3C94B04219A4EA1D0027201A /* FullSize.m in Sources */,
+				3C94B04D19A52DE00027201A /* CDFolderTableViewController.m in Sources */,
 				3CAEBE3E1983457800E4002C /* main.m in Sources */,
 				3CFA3CA61989C24F005224F2 /* CoreDataBaseVC.m in Sources */,
 				3C05E2371985C10D008C33E2 /* RBGroupViewController.m in Sources */,

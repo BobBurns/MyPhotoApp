@@ -8,7 +8,7 @@
 
 #import "FetchGroupCollectionVC.h"
 #import "CDDetailViewController.h"
-@import LocalAuthentication;
+#import "LibraryRootViewController.h"
 
 #import "AppDelegate.h"
 #import "CoreDataHelper.h"
@@ -57,21 +57,7 @@ static NSString * const reuseIdentifier = @"Cell";
                                                object:nil];
     self.collectionView.allowsMultipleSelection = NO;
     
-    //progress
-    self.indicatorView = [[UIActivityIndicatorView alloc]
-                          initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
-    self.indicatorView.hidden = NO;
-    self.indicatorView.hidesWhenStopped = YES;
-    [self.indicatorView startAnimating];
-    
-    UIBarButtonItem* spinner = [[UIBarButtonItem alloc] initWithCustomView: self.indicatorView];
-    CDMainVC *mvc = [[CDMainVC alloc] init];
-    mvc.navigationItem.rightBarButtonItem = spinner;
-    
-    // Fetch objects
     [self performFetch];
-    
-    [self.indicatorView stopAnimating];
     
     
 }
@@ -79,8 +65,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     self.navigationItem.title = @"PhotoSafe";
     if (!_resultArray) {
-        
-        
+                
         [self performFetch];
     }
     
@@ -126,7 +111,7 @@ static NSString * const reuseIdentifier = @"Cell";
                                                              ascending:YES],
                                nil];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photoAlbum.name = 'defaultFolder'"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photoAlbum.name = %@", self.folderName];
     [request setPredicate:predicate];
     [request setFetchBatchSize:30];
     /*
@@ -220,8 +205,15 @@ static NSString * const reuseIdentifier = @"Cell";
         
         
         //_resultArray = nil;
+    } else if ([segue.identifier isEqualToString:@"importSegue"]) {
+        
+        LibraryRootViewController *lVC = [segue destinationViewController];
+        NSString *folderName = self.folderName;
+        [lVC setLibraryFolderName:folderName];
+        
     }
 }
+
 
 
 #pragma mark <UICollectionViewDataSource>

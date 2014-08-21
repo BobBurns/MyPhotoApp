@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) NSArray *resultArray;
 @property (strong, nonatomic) NSFetchedResultsController *frc;
+@property (strong, nonatomic) NSString *folderName;
 
 - (void)performFetch;
 
