@@ -2,7 +2,7 @@
 //  Folders.m
 //  MyPhotoLibrary
 //
-//  Created by WozniBob on 7/30/14.
+//  Created by WozniBob on 8/21/14.
 //  Copyright (c) 2014 Bob_Burns. All rights reserved.
 //
 
@@ -12,10 +12,9 @@
 
 @implementation Folders
 
+@dynamic date;
 @dynamic name;
 @dynamic thumbnail;
-@dynamic location;
-@dynamic date;
 @dynamic images;
 
 @end

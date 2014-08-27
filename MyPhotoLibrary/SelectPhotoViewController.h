@@ -8,8 +8,9 @@
 
 @import UIKit;
 @import Photos;
+@import StoreKit;
 
-@interface SelectPhotoViewController : UIViewController <UICollectionViewDataSource, UIApplicationDelegate>
+@interface SelectPhotoViewController : UIViewController <UICollectionViewDataSource, UIApplicationDelegate, UIAlertViewDelegate, SKProductsRequestDelegate>
 
 @property (strong) PHFetchResult *assetsFetchResults;
 @property (strong) PHAssetCollection *assetCollection;

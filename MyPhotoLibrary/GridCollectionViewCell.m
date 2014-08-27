@@ -28,6 +28,9 @@
         
         [self.selectedBackgroundView
          setBackgroundColor:[UIColor greenColor]];
+        if (self.isChecked) {
+            self.checkMarkView.hidden = NO;
+        }
         
     }
     return self;

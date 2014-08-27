@@ -33,7 +33,23 @@
 
 @implementation FetchGroupCollectionVC
 
+#pragma mark - paths
+
+- (NSString *)applicationSupportDirectoryPath {
+    NSString *applicationSupportPath = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+    [[NSFileManager defaultManager]
+     createDirectoryAtPath:applicationSupportPath
+     withIntermediateDirectories:YES
+     attributes:nil
+     error:nil];
+    
+    return applicationSupportPath;
+    
+}
+
 static NSString * const reuseIdentifier = @"Cell";
+
+
 
 - (void)viewWillAppear:(BOOL)animated {
     
@@ -63,7 +79,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 - (void)viewDidAppear:(BOOL)animated {
     
-    self.navigationItem.title = @"PhotoSafe";
+    self.navigationItem.title = _folderName;
     if (!_resultArray) {
                 
         [self performFetch];
@@ -191,6 +207,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
 
     if ([segue.identifier isEqualToString:@"showPhoto"]) {
+        //CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
         
         NSIndexPath *indexPath = [self.collectionView indexPathForCell:sender];
         Photos *selPhoto = [_resultArray objectAtIndex:indexPath.row];
@@ -201,8 +218,10 @@ static NSString * const reuseIdentifier = @"Cell";
         NSData *fulldata = selPhoto.full.fullsizeImage;
         detailVC.displayPhoto = [UIImage imageWithData:fulldata];
         detailVC.photoID = selPhoto.objectID;
+        detailVC.displayPhotoFilename = selPhoto.fileName;
         detailVC.displayDate = selPhoto.date;
         
+        //[Faulter faultObjectWithID:selPhoto.full.objectID inContext:cdh.context];
         
         //_resultArray = nil;
     } else if ([segue.identifier isEqualToString:@"importSegue"]) {
@@ -211,6 +230,28 @@ static NSString * const reuseIdentifier = @"Cell";
         NSString *folderName = self.folderName;
         [lVC setLibraryFolderName:folderName];
         
+    } else if ([segue.identifier isEqualToString:@"newDetail"]) {
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:sender];
+        Photos *selPhoto = [_resultArray objectAtIndex:indexPath.row];
+        NSLog(@"%d", [selPhoto.isVideo boolValue]);
+        CDDetailViewController *detailVC = segue.destinationViewController;
+        
+        if ([selPhoto.isVideo boolValue]) {
+            NSString *path = [[self applicationSupportDirectoryPath] stringByAppendingPathComponent:selPhoto.fileName];
+            detailVC.videoContainerView.hidden = NO;
+            detailVC.isVideo = YES;
+            detailVC.videoURL = [NSURL fileURLWithPath:path];
+            
+            detailVC.photoID = selPhoto.objectID;
+            
+        } else {
+            NSData *fulldata = selPhoto.full.fullsizeImage;
+            detailVC.displayPhoto = [UIImage imageWithData:fulldata];
+            detailVC.photoID = selPhoto.objectID;
+            detailVC.displayPhotoFilename = selPhoto.fileName;
+            detailVC.displayDate = selPhoto.date;
+            detailVC.videoContainerView.hidden = YES;
+        }
     }
 }
 

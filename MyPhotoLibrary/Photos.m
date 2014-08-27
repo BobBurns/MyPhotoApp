@@ -2,7 +2,7 @@
 //  Photos.m
 //  MyPhotoLibrary
 //
-//  Created by WozniBob on 8/20/14.
+//  Created by WozniBob on 8/26/14.
 //  Copyright (c) 2014 Bob_Burns. All rights reserved.
 //
 
@@ -14,11 +14,12 @@
 @implementation Photos
 
 @dynamic date;
+@dynamic fileName;
 @dynamic location;
 @dynamic name;
-@dynamic photo;
 @dynamic thumb;
-@dynamic photoAlbum;
+@dynamic isVideo;
 @dynamic full;
+@dynamic photoAlbum;
 
 @end

@@ -2,7 +2,7 @@
 //  Folders.h
 //  MyPhotoLibrary
 //
-//  Created by WozniBob on 7/30/14.
+//  Created by WozniBob on 8/21/14.
 //  Copyright (c) 2014 Bob_Burns. All rights reserved.
 //
 
@@ -13,10 +13,9 @@
 
 @interface Folders : NSManagedObject
 
+@property (nonatomic, retain) NSDate * date;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSData * thumbnail;
-@property (nonatomic, retain) NSString * location;
-@property (nonatomic, retain) NSDate * date;
 @property (nonatomic, retain) NSSet *images;
 @end
 

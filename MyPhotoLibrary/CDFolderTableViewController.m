@@ -23,6 +23,20 @@
 
 @implementation CDFolderTableViewController
 
+#pragma mark - path
+
+- (NSString *)applicationSupportDirectoryPath {
+    NSString *applicationSupportPath = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+    [[NSFileManager defaultManager]
+     createDirectoryAtPath:applicationSupportPath
+     withIntermediateDirectories:YES
+     attributes:nil
+     error:nil];
+    
+    return applicationSupportPath;
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configureFetch];
@@ -35,6 +49,7 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addItem:)];
     self.navigationItem.rightBarButtonItem = addButton;
+    self.navigationItem.leftBarButtonItem = self.editButtonItem;
 }
 
 #pragma mark - add Folder
@@ -43,7 +58,7 @@
     UIAlertView* enterFolderName = [[UIAlertView alloc] initWithTitle:@"Please enter a name for your folder"
                                                               message:nil
                                                              delegate:(id)self
-                                                    cancelButtonTitle:nil
+                                                    cancelButtonTitle:@"Cancel"
                                                     otherButtonTitles:@"Ok", nil];
     enterFolderName.tag = kEnterFolderName;
     enterFolderName.alertViewStyle = UIAlertViewStylePlainTextInput;
@@ -59,11 +74,14 @@
 {
     if(alertView.tag == kEnterFolderName)
     {
-        CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
-        Folders *newFolderName = [NSEntityDescription insertNewObjectForEntityForName:@"Folders" inManagedObjectContext:cdh.context];
-        newFolderName.name = _folderTextField.text;
-        [cdh backgroundSaveContext];
-        [self performFetch];
+        if (buttonIndex == 1) {
+            CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
+            Folders *newFolderName = [NSEntityDescription insertNewObjectForEntityForName:@"Folders" inManagedObjectContext:cdh.context];
+            newFolderName.name = _folderTextField.text;
+            [cdh backgroundSaveContext];
+            [self performFetch];
+        }
+        
     }
 }
 #pragma mark - DELEGATE: NSFetchedResultsController
@@ -98,6 +116,7 @@
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]
                           withRowAnimation:UITableViewRowAnimationFade];
+            
             break;
         case NSFetchedResultsChangeMove:
             break;
@@ -212,18 +231,47 @@
     return YES;
 }
 */
+- (void)tableView:(UITableView *)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+}
+- (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+}
+// override editing to hide button
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+    [super setEditing:editing animated:animated];
+    
+    if(editing == YES)
+    {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    } else {
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+        // Your code for exiting edit mode goes here
+    }
+}
 
-/*
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
         // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        Folders *deletedTarget = [self.frc objectAtIndexPath:indexPath];
+        // first delete BLOBS
+        //[self deleteBlobsWithFolderName:(NSString *)deletedTarget.name];
+        [self.frc.managedObjectContext deleteObject:deletedTarget];
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
+        [cdh backgroundSaveContext];
+        
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        [self addItem:self];
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-*/
+
 
 /*
 // Override to support rearranging the table view.
@@ -238,7 +286,47 @@
     return YES;
 }
 */
+#pragma mark - handle delete folder
 
+- (void)deleteBlobsWithFolderName:(NSString *)name {
+    
+    __block NSString *folderName = name;
+    
+    // do all this on a background thread
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                             (unsigned long)NULL), ^(void) {
+        CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
+        
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photos"];
+        
+        request.sortDescriptors = [NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"photoAlbum"
+                                                                                          ascending:YES],
+                                   [NSSortDescriptor sortDescriptorWithKey:@"date"
+                                                                 ascending:YES],
+                                   nil];
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photoAlbum.name = %@", folderName];
+        [request setPredicate:predicate];
+        
+        NSError *error = nil;
+        NSArray *folderResults = [cdh.context executeFetchRequest:request error:&error];
+        if (!folderResults) {
+            NSLog(@"error fetching folders to delete. Error %@", error);
+        }
+        for (Photos *photo in folderResults) {
+            NSString *fileName = photo.fileName;
+            NSString *pathToDelete = [[self applicationSupportDirectoryPath] stringByAppendingPathComponent:fileName];
+            [[NSFileManager defaultManager] removeItemAtPath:pathToDelete error:&error];
+            if (error) {
+                NSLog(@"error: %@", error);
+            }
+            
+        }
+        
+        
+    });
+}
 
 #pragma mark - Navigation
 

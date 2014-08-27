@@ -11,7 +11,10 @@
 #import "CoreDataHelper.h"
 #import "Photos.h"
 
-#import <CoreData/CoreData.h>
+@import CoreData;
+@import AVFoundation;
+@import AVKit;
+
 
 #define debug 1
 
@@ -25,8 +28,28 @@
     
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self popViewControllerWhenBackgroundIsTouhed];
+    //[self popViewControllerWhenBackgroundIsTouhed];
     [self.photoScrollView setDelegate:(id)self];
+    if (!self.isVideo) {
+        self.videoContainerView.hidden = YES;
+    }
+    
+    
+}
+- (void)viewWillAppear:(BOOL)animated {
+    
+}
+#pragma mark - utility file
+
+- (NSString *)applicationSupportDirectoryPath {
+    NSString *applicationSupportPath = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+    [[NSFileManager defaultManager]
+     createDirectoryAtPath:applicationSupportPath
+     withIntermediateDirectories:YES
+     attributes:nil
+     error:nil];
+    
+    return applicationSupportPath;
     
 }
 
@@ -68,21 +91,25 @@
     }
      */
 }
+- (void)viewWillDisappear:(BOOL)animated {
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString:@"showVideo"]) {
+        AVPlayerViewController *playerViewController = segue.destinationViewController;
+        playerViewController.player = [AVPlayer playerWithURL:self.videoURL];
+    }
 }
-*/
+
 #pragma mark - Trash Button
 
 - (IBAction)handleDeletePhoto:(id)sender {
@@ -109,25 +136,40 @@
     }
     if (alertView == self.deleteAlertView) {
         if (buttonIndex == 1) {
+            NSError *error;
+            NSString *path = [[self applicationSupportDirectoryPath] stringByAppendingPathComponent:self.displayPhotoFilename];
+            [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
+            NSLog(@"remove item error: %@", error);
+            
             CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
+            
+            Photos *photoToDelete = (Photos *)[cdh.context objectWithID:self.photoID];
+            if ([photoToDelete.isVideo boolValue]) {
+                NSError *error;
+                //NSURL *URLtoDelete = [NSURL URLWithString:photoToDelete.fileName];
+                NSFileManager *fm = [NSFileManager defaultManager];
+                [fm removeItemAtPath:photoToDelete.fileName error:&error];
+                if (error) {
+                    NSLog(@"error deleting video: %@ '%@'", error, error.description);
+                }
+            }
             if (![self.photoID isTemporaryID]) {
-                Photos *photoToDelete = (Photos *)[cdh.context objectWithID:self.photoID];
-                [cdh.context deleteObject:photoToDelete];
-                [cdh backgroundSaveContext];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
-                                                                    object:nil];
-                NSLog(@"Photo Deleted");
-                [[self navigationController] popViewControllerAnimated:YES];
+                NSLog(@"attempting to delte object with tempID");
                 
             } else {
                 NSLog(@"Couldn't delete Temp ID");
-                return;
             }
+            [cdh.context deleteObject:photoToDelete];
+            [cdh backgroundSaveContext];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
+                                                                object:nil];
+            NSLog(@"Photo Deleted");
+            [[self navigationController] popViewControllerAnimated:YES];
+            
         } else {
             NSLog(@"Cancled Delete");
         }
-        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 @end

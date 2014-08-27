@@ -38,10 +38,11 @@ static NSString * const CollectionSegue = @"showCollection";
     if (debug == 1) {
         NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
     }
+    self.navigationItem.title = @"Camera Roll";
     //PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
     PHFetchResult *topLevelUserCollections = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
-    self.collectionsFetchResults = @[topLevelUserCollections];
-    self.collectionsLocalizedTitles = @[NSLocalizedString(@"Albums", @"")];
+    self.collectionsFetchResults = @[ topLevelUserCollections];
+    self.collectionsLocalizedTitles = @[ NSLocalizedString(@"Albums", @"")];
     
     [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
 }

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <Security/Security.h>
+#import <StoreKit/StoreKit.h>
 
 #import "CoreDataHelper.h"
 #import "KeychainItemWrapper.h"
@@ -15,7 +16,7 @@
 
 @import LocalAuthentication;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate, SKPaymentTransactionObserver>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong, readonly) CoreDataHelper *coreDataHelper;

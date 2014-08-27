@@ -8,6 +8,8 @@
 
 #import "SelectPhotoViewController.h"
 #import "GridCollectionViewCell.h"
+#import <AVFoundation/AVFoundation.h>
+
 
 #import "AppDelegate.h"
 #import "CoreDataHelper.h"
@@ -18,6 +20,8 @@
 #import "Faulter.h"
 
 #define debug 1
+#define kMaxSelections 5
+#define proVersion 1
 
 @import Photos;
 @import CoreLocation;
@@ -73,6 +77,9 @@
 @property CGRect previousPreheatRect;
 
 @property (nonatomic, strong) Folders *currentFolder;
+@property (nonatomic, strong) NSMutableArray *importedPhotos;
+@property BOOL allowImport;
+
 @end
 
 
@@ -84,6 +91,10 @@ static CGSize AssetGridThumbnailSize;
 
 #pragma mark - views
 
+- (NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 - (void)awakeFromNib
 {
     if (debug == 1) {
@@ -92,11 +103,14 @@ static CGSize AssetGridThumbnailSize;
     self.imageManager = [[PHCachingImageManager alloc] init];
     [self resetCachedAssets];
     [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
+    _allowImport = YES;
+    
 }
 
 - (void)dealloc
 {
     [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:self];
+    self.imageManager = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -106,9 +120,9 @@ static CGSize AssetGridThumbnailSize;
     }
     [super viewWillAppear:animated];
     
-    UIBarButtonItem *importButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(moveItems)];
-    
-    self.navigationItem.rightBarButtonItem = importButton;
+   // UIBarButtonItem *importButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(moveItems)];
+    UIBarButtonItem *import = [[UIBarButtonItem alloc] initWithTitle:@"Import" style:UIBarButtonItemStylePlain target:self action:@selector(moveItems)];
+    self.navigationItem.rightBarButtonItem = import;
     
     // get default folder
     NSError *error = nil;
@@ -140,13 +154,7 @@ static CGSize AssetGridThumbnailSize;
     
     [self.collectionView setAllowsMultipleSelection:YES];
     
-    /*
-    if (!self.assetCollection || [self.assetCollection canPerformEditOperation:PHCollectionEditOperationAddContent]) {
-        self.navigationItem.rightBarButtonItem = self.addButton;
-    } else {
-        self.navigationItem.rightBarButtonItem = nil;
-    }
-     */
+    
 }
 
 
@@ -246,6 +254,12 @@ static CGSize AssetGridThumbnailSize;
                                   }
                                   
                               }];
+    cell.isChecked = NO;
+    for (NSIndexPath *index in _importedPhotos) {
+        if (indexPath.row == index.row) {
+            cell.isChecked = YES;
+        }
+    }
     
     
     return cell;
@@ -257,11 +271,22 @@ static CGSize AssetGridThumbnailSize;
 {
     [self updateCachedAssets];
 }
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+    self.navigationItem.title = [NSString stringWithFormat:@"%lu items", (unsigned long)self.collectionView.indexPathsForSelectedItems.count];
+    
+}
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
     NSLog(@"Item selected at indexPath: %@",indexPath);
-    self.navigationItem.title = [NSString stringWithFormat:@"%d items", self.collectionView.indexPathsForSelectedItems.count];
+    NSUInteger selectCount = _collectionView.indexPathsForSelectedItems.count;
+    
+    if (selectCount > kMaxSelections) {
+        [self allowMultipleImport];
+        [_collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    }
+    self.navigationItem.title = [NSString stringWithFormat:@"%lu items", (unsigned long)self.collectionView.indexPathsForSelectedItems.count];
+
 }
 
 #pragma mark - Asset Caching
@@ -358,58 +383,25 @@ static CGSize AssetGridThumbnailSize;
 
 - (IBAction)handleAddButtonItem:(id)sender
 {
-    // Create a random dummy image.
-    CGRect rect = rand() % 2 == 0 ? CGRectMake(0, 0, 400, 300) : CGRectMake(0, 0, 300, 400);
-    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 1.0f);
-    [[UIColor colorWithHue:(float)(rand() % 100) / 100 saturation:1.0 brightness:1.0 alpha:1.0] setFill];
-    UIRectFillUsingBlendMode(rect, kCGBlendModeNormal);
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    // Add it to the photo library
-    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-        PHAssetChangeRequest *assetChangeRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
-        
-        if (self.assetCollection) {
-            PHAssetCollectionChangeRequest *assetCollectionChangeRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:self.assetCollection];
-            [assetCollectionChangeRequest addAssets:@[[assetChangeRequest placeholderForCreatedAsset]]];
-        }
-    } completionHandler:^(BOOL success, NSError *error) {
-        if (!success) {
-            NSLog(@"Error creating asset: %@", error);
-        }
-    }];
+   
 }
 
 - (IBAction)actionButtonClicked:(id)sender {
+   
+}
+
+- (NSString *)applicationSupportDirectoryPath {
+    NSString *applicationSupportPath = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+    [[NSFileManager defaultManager]
+     createDirectoryAtPath:applicationSupportPath
+     withIntermediateDirectories:YES
+     attributes:nil
+     error:nil];
     
-    void (^completionHandler)(BOOL, NSError *) = ^(BOOL success, NSError *error) {
-        if (success) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[self navigationController] popViewControllerAnimated:YES];
-            });
-        } else {
-            NSLog(@"Error: %@", error);
-        }
-    };
-    
-    
-    NSMutableArray *assets = [[NSMutableArray alloc] initWithArray:[self assetsAtIndexPaths:self.collectionView.indexPathsForSelectedItems]];
-    for (PHAsset *asset in assets) {
-        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-            PHAssetChangeRequest *request = [PHAssetChangeRequest changeRequestForAsset:asset];
-            if ([asset canPerformEditOperation:PHAssetEditOperationProperties]) {
-                request.hidden = YES;
-                NSLog(@"hiding asset");
-            } else {
-                NSLog(@"can't edit asset");
-            }
-            
-        } completionHandler:completionHandler];
-    }
-    
+    return applicationSupportPath;
     
 }
+
 - (void)moveItems {
     NSMutableArray *assets = [[NSMutableArray alloc] initWithArray:[self assetsAtIndexPaths:self.collectionView.indexPathsForSelectedItems]];
     
@@ -417,145 +409,213 @@ static CGSize AssetGridThumbnailSize;
     
     
     for (PHAsset *asset in assets) {
+        
+        BOOL isVideo = NO;
         Photos *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:@"Photos" inManagedObjectContext:cdh.context];
         FullSize *fullsize = [NSEntityDescription insertNewObjectForEntityForName:@"FullSize" inManagedObjectContext:cdh.context];
         
-        CGSize size = CGSizeMake(200.0, 200.0);
+        if (asset.mediaType == PHAssetMediaTypeVideo) {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"purchasedPro"] == NO) {
+                NSLog(@"Asset is video");
+                [self allowVideoImport];
+                return;
+            } else {
+                // first get thumbnail
+                CGSize size = CGSizeMake(80.0, 80.0);
+                [self.imageManager requestImageForAsset:asset
+                                             targetSize:size
+                                            contentMode:PHImageContentModeAspectFill
+                                                options:nil
+                                          resultHandler:^(UIImage *result, NSDictionary *info) {
+                                              
+                                              newPhoto.thumb = UIImageJPEGRepresentation(result, 1);
+                                          }];
+                
+                // import video
+                //__block NSData *imageData;
+                isVideo = YES;
+                CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
+                CFStringRef uuidString = CFUUIDCreateString(kCFAllocatorDefault, uuid);
+                NSString *filename = [NSString stringWithFormat:@"%@.mov", uuidString];
+                __block NSString *path = [[self applicationSupportDirectoryPath] stringByAppendingPathComponent:filename];
+                CFRelease(uuid);
+                CFRelease(uuidString);
+                newPhoto.fileName = filename;
+                newPhoto.isVideo = [NSNumber numberWithBool:YES];
+                
+                //write image to file
+                
+                
+                //remove the previous file, if any
+                if (newPhoto.fileName != nil) {
+                    NSString *previousPath = [[self applicationSupportDirectoryPath] stringByAppendingPathComponent:newPhoto.fileName];
+                    [[NSFileManager defaultManager] removeItemAtPath:previousPath error:nil];
+                }
+                [self.imageManager requestExportSessionForVideo:asset
+                                                        options:nil
+                                                   exportPreset:AVAssetExportPresetLowQuality
+                 
+                                                  resultHandler:^(AVAssetExportSession *session, NSDictionary *info){
+                                                  // handle export session here
+                                                      NSURL *vidPath = [NSURL fileURLWithPath:path];
+                                                      session.outputURL = vidPath;
+                                                      session.outputFileType = AVFileTypeQuickTimeMovie;
+                                                      [session exportAsynchronouslyWithCompletionHandler:^(void) {
+                                                          if (AVAssetExportSessionStatusCompleted == session.status)
+                                                          {
+                                                              NSLog(@"done writing video!");
+                                                          }
+                                                      }];
+                                                  }];
+            }
         
-        [self.imageManager requestImageForAsset:asset
-                                     targetSize:size
-                                    contentMode:PHImageContentModeAspectFill
-                                        options:nil
-                                  resultHandler:^(UIImage *result, NSDictionary *info) {
-                                      
-                                      fullsize.fullsizeImage = UIImageJPEGRepresentation(result, .8);
-                                      //newPhoto.photo =  UIImageJPEGRepresentation(result, .9);
-                                      
-                                      CGSize size = CGSizeMake(60.0, 60.0);
-                                      UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
-                                      [result drawInRect:CGRectMake(0, 0, size.width, size.height)];
-                                      UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
-                                      UIGraphicsEndImageContext();
-                                      
-                                      
-                                      newPhoto.thumb = UIImageJPEGRepresentation(thumbnail, 1);
-                                      
-                                  }];
-        
-        
-        newPhoto.date = [NSDate date];
-        //newPhoto.name = asset.location.description;
-        
-        newPhoto.full = fullsize;
+            
+        } else {
+            CGSize size = CGSizeMake(400.0, 400.0);
+            
+            /*
+             __block NSData *imageData;
+             CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
+             CFStringRef uuidString = CFUUIDCreateString(kCFAllocatorDefault, uuid);
+             NSString *filename = [NSString stringWithFormat:@"%@.jpeg", uuidString];
+             __block NSString *path = [[self applicationSupportDirectoryPath] stringByAppendingPathComponent:filename];
+             CFRelease(uuid);
+             CFRelease(uuidString);
+             newPhoto.fileName = filename;
+             
+             //write image to file
+             
+             
+             //remove the previous file, if any
+             if (newPhoto.fileName != nil) {
+             NSString *previousPath = [[self applicationSupportDirectoryPath] stringByAppendingPathComponent:newPhoto.fileName];
+             [[NSFileManager defaultManager] removeItemAtPath:previousPath error:nil];
+             }
+             */
+            //PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+            //options.resizeMode = PHImageRequestOptionsResizeModeNone;
+            
+            //self.imageManager.allowsCachingHighQualityImages = YES;
+            
+            [self.imageManager requestImageForAsset:asset
+                                         targetSize:size
+                                        contentMode:PHImageContentModeAspectFill
+                                            options:nil
+                                      resultHandler:^(UIImage *result, NSDictionary *info) {
+                                          
+                                          
+                                          // imageData = UIImageJPEGRepresentation(result, 1);
+                                          //newPhoto.photo =  UIImageJPEGRepresentation(result, .9);
+                                          
+                                          // [imageData writeToFile:path atomically:YES];
+                                          // imageData = nil;
+                                          fullsize.fullsizeImage = UIImageJPEGRepresentation(result, .9);
+                                          
+                                          CGSize size = CGSizeMake(80.0, 80.0);
+                                          UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
+                                          [result drawInRect:CGRectMake(0, 0, size.width, size.height)];
+                                          UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
+                                          UIGraphicsEndImageContext();
+                                          result = nil;
+                                          
+                                          newPhoto.thumb = UIImageJPEGRepresentation(thumbnail, 1);
+                                          // save filename in the photo object
+                                          
+                                          
+                                      }];
+            
+            
+            newPhoto.full = fullsize;
+            newPhoto.date = [NSDate date];
+            [Faulter faultObjectWithID:fullsize.objectID inContext:cdh.context];
+            [Faulter faultObjectWithID:newPhoto.full.objectID inContext:cdh.context];
+        }
         
         [_currentFolder addImagesObject:newPhoto];
-        
-        [cdh backgroundSaveContext];
-        [Faulter faultObjectWithID:newPhoto.full.objectID inContext:cdh.context];
         [Faulter faultObjectWithID:newPhoto.objectID inContext:cdh.context];
         
-        /*
-         [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-         //PHAssetChangeRequest *request = [PHAssetChangeRequest changeRequestForAsset:asset];
-         if ([asset canPerformEditOperation:PHAssetEditOperationDelete]) {
-         
-         [PHAssetChangeRequest deleteAssets:@[asset]];
-         NSLog(@"deleting asset");
-         } else {
-         NSLog(@"can't edit asset");
-         }
-         
-         
-         } completionHandler:completionHandler];
-         */
     }
+    
+    self.imageManager = nil;
+    [cdh backgroundSaveContext];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
                                                         object:nil];
     
-    [[self navigationController] popViewControllerAnimated:YES];
+    _importedPhotos = [[NSMutableArray alloc] initWithArray:self.collectionView.indexPathsForSelectedItems];
+    
+    for (NSIndexPath *ip in _collectionView.indexPathsForSelectedItems) {
+        [_collectionView deselectItemAtIndexPath:ip animated:NO];
+    }
+   // [self updateCachedAssets];
+    //[_collectionView reloadData];
+    self.navigationItem.title = [NSString stringWithFormat:@"%lu items", (unsigned long)self.collectionView.indexPathsForSelectedItems.count];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    
 }
+
 
 - (IBAction)makePhotoHidden:(id)sender {
-    /* if you need it later
-    void (^completionHandler)(BOOL, NSError *) = ^(BOOL success, NSError *error) {
-        if (success) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSLog(@"dismiss view here");
-                //[[self navigationController] popViewControllerAnimated:YES];
-                
-            });
-        } else {
-            NSLog(@"Error: %@", error);
-        }
-    };
-    */
-    //get default folder
     
-    
-    NSMutableArray *assets = [[NSMutableArray alloc] initWithArray:[self assetsAtIndexPaths:self.collectionView.indexPathsForSelectedItems]];
-    
-    CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
-    
-    
-    for (PHAsset *asset in assets) {
-        Photos *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:@"Photos" inManagedObjectContext:cdh.context];
-        FullSize *fullsize = [NSEntityDescription insertNewObjectForEntityForName:@"FullSize" inManagedObjectContext:cdh.context];
-        
-        CGSize size = CGSizeMake(200.0, 200.0);
-        
-        [self.imageManager requestImageForAsset:asset
-                                     targetSize:size
-                                    contentMode:PHImageContentModeAspectFill
-                                        options:nil
-                                  resultHandler:^(UIImage *result, NSDictionary *info) {
-                                      
-                                      fullsize.fullsizeImage = UIImageJPEGRepresentation(result, .8);
-                                      //newPhoto.photo =  UIImageJPEGRepresentation(result, .9);
-                                      
-                                      CGSize size = CGSizeMake(60.0, 60.0);
-                                      UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
-                                      [result drawInRect:CGRectMake(0, 0, size.width, size.height)];
-                                      UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
-                                      UIGraphicsEndImageContext();
-                                       
-                                    
-                                      newPhoto.thumb = UIImageJPEGRepresentation(thumbnail, 1);
-                                      
-                                  }];
-        
-    
-        newPhoto.date = [NSDate date];
-        //newPhoto.name = asset.location.description;
-        
-        newPhoto.full = fullsize;
-        
-        [_currentFolder addImagesObject:newPhoto];
-        
-        [cdh backgroundSaveContext];
-        [Faulter faultObjectWithID:newPhoto.full.objectID inContext:cdh.context];
-        [Faulter faultObjectWithID:newPhoto.objectID inContext:cdh.context];
-        
-        [[self navigationController] popViewControllerAnimated:YES];
-        
-        /*
-        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-            //PHAssetChangeRequest *request = [PHAssetChangeRequest changeRequestForAsset:asset];
-            if ([asset canPerformEditOperation:PHAssetEditOperationDelete]) {
-                
-                [PHAssetChangeRequest deleteAssets:@[asset]];
-                NSLog(@"deleting asset");
-            } else {
-                NSLog(@"can't edit asset");
-            }
-            
-            
-        } completionHandler:completionHandler];
-         */
-    }
-    
-    //[[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
-      //                                                 object:nil];
 }
 
+#pragma mark - alert views
+
+- (void)allowMultipleImport {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Too many imports"
+                                                    message:@"Unlock this feature for $1 USD"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Unlock", @"Restore", nil];
+    alert.tag = 1002;
+    [alert show];
+}
+- (void)allowVideoImport {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Video not supported"
+                                                    message:@"Unlock this feature for $1 USD"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Unlock", @"Restore", nil];
+    alert.tag = 1003;
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 1002 || alertView.tag == 1003) {
+        if (buttonIndex == 1) {
+            /* not set up in itunes
+             
+            if (![SKPaymentQueue canMakePayments]) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Can't purchase!" message:@"You don't have purchacing privaliges" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+                [alert show];
+                return;
+            }
+            SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithObject:@"proID"]];
+            request.delegate = self;
+            [request start];
+             */
+            
+            NSURL *url = [NSURL URLWithString:@"http://www.chefspecialapp.com"];
+            
+            if (![[UIApplication sharedApplication] openURL:url]) {
+                NSLog(@"%@%@",@"Failed to open url:",[url description]);
+            }
+            
+        }
+        if (buttonIndex == 2) {
+            // not set up
+            // [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
+            NSLog(@"Restore button pressed");
+        }
+    }
+}
+
+#pragma mark - store kit delegate
+
+- (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response {
+    SKProduct *product = response.products[0];
+    SKPayment *payment = [SKPayment paymentWithProduct:product];
+    SKPaymentQueue *paymentQueue = [SKPaymentQueue defaultQueue];
+    [paymentQueue addPayment:payment];
+}
 @end

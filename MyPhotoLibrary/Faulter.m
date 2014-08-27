@@ -32,7 +32,7 @@
             NSLog(@"Faulting object %@ in context %@", object.objectID, context);
             [context refreshObject:object mergeChanges:NO];
         } else {
-            NSLog(@"Skipped faulting an object that is already a fault");
+          //  NSLog(@"Skipped faulting an object that is already a fault");
         }
         if (context.parentContext) {
             [self faultObjectWithID:objectID inContext:context.parentContext];

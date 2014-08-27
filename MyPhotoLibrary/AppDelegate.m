@@ -37,7 +37,7 @@
 {
     [[NSUserDefaults standardUserDefaults] registerDefaults:
      [NSDictionary dictionaryWithObjectsAndKeys:
-      [NSNumber numberWithBool:YES], @"firstRun",
+      [NSNumber numberWithBool:NO], @"purchasedPro",
       nil]];
 }
 
@@ -54,26 +54,27 @@
     success = [context canEvaluatePolicy: LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error];
     if (success) {
         msg =[NSString stringWithFormat:NSLocalizedString(@"TOUCH_ID_IS_AVAILABLE", nil)];
+        NSLog(@"%@", msg);
         [self evaluatePolicy];
+        return;
     } else {
         
-        /*old alert method
-        msg =[NSString stringWithFormat:NSLocalizedString(@"TOUCH_ID_IS_NOT_AVAILABLE", nil)];
-        self.noTouchAlert = [[UIAlertView alloc] initWithTitle:@"TouchId not enabled"
-                                                       message:@"Please enter password"
-                                                      delegate:(id)self
-                                             cancelButtonTitle:@"Cancel"
-                                             otherButtonTitles:@"OK", nil];
-        self.noTouchAlert.alertViewStyle = UIAlertViewStyleSecureTextInput;
+        NSLog(@"TOUCH_ID_NOT_AVAILABLE");
+        [self usePasswordInstead];
         
-        _passText = [self.noTouchAlert textFieldAtIndex:0];
-        _passText.clearButtonMode = UITextFieldViewModeWhileEditing;
-        //_passText.keyboardAppearance = UIKeyboardTypeDecimalPad;
-        [self.noTouchAlert show];
-         */
     }
-    NSLog(@"%@", msg);
-    [self usePasswordInstead];
+    
+}
+- (void)handleNotEnrolled {
+    UIAlertView *notEnrolledAlert = [[UIAlertView alloc] initWithTitle:@"TouchID not enrolled"
+                                                               message:@"Please configure your touchID in Settings to use this app"
+                                                              delegate:self
+                                                     cancelButtonTitle:nil
+                                                     otherButtonTitles:@"OK", nil];
+    
+    [notEnrolledAlert show];
+    sleep(2);
+    exit(0);
     
 }
 - (void)evaluatePolicy
@@ -82,14 +83,38 @@
     __block  NSString *msg;
     
     // show the authentication UI with our reason string
-    [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:NSLocalizedString(@"You can only access this app through TouchID", nil) reply:
+    [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:NSLocalizedString(@"You can only access this app through TouchID\n", nil) reply:
      ^(BOOL success, NSError *authenticationError) {
          if (success) {
              msg =[NSString stringWithFormat:NSLocalizedString(@"EVALUATE_POLICY_SUCCESS", nil)];
+             NSLog(@"%@", msg);
+             return;
          } else {
              msg = [NSString stringWithFormat:NSLocalizedString(@"EVALUATE_POLICY_WITH_ERROR", nil), authenticationError.localizedDescription];
              NSLog(@"%@", msg);
-             exit(1);
+             switch (authenticationError.code) {
+                 case LAErrorAuthenticationFailed:
+                     NSLog(@"Authentication Failed");
+                     exit(0);
+                     break;
+                     
+                 case LAErrorUserCancel:
+                     NSLog(@"User pressed Cancel button");
+                     exit(0);
+                     break;
+                     
+                 case LAErrorUserFallback:
+                     NSLog(@"User pressed \"Enter Password\"");
+                     [self usePasswordInstead];
+                     break;
+                 case LAErrorTouchIDNotEnrolled:
+                     [self usePasswordInstead];
+                     break;
+                 default:
+                     NSLog(@"All other errors use password");
+                     [self usePasswordInstead];
+                     break;
+             }
          }
          NSLog(@"%@", msg);
      }];
@@ -132,28 +157,32 @@
     
     if([[_pinWrapper objectForKey:(__bridge id)(kSecValueData)] length] == 0)
     {
-        UIAlertView* dialog = [[UIAlertView alloc] initWithTitle:@"Enter New Pin" message:@"please enter password" delegate:(id)self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
-        dialog.tag = kEnterNewPinAlert;
-        dialog.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
-        _pinField = [dialog textFieldAtIndex:0];
-        [_pinField setPlaceholder:@"Enter PIN"];
-        [_pinField setSecureTextEntry: YES];
-        [_pinField setKeyboardType:UIKeyboardTypeNumberPad];
-        [_pinField setBackgroundColor:[UIColor whiteColor]];
-        
-        _repeatPinField = [dialog textFieldAtIndex:1];
-        [_repeatPinField setPlaceholder:@"Repeat PIN"];
-        [_repeatPinField setSecureTextEntry: YES];
-        [_repeatPinField setKeyboardType:UIKeyboardTypeNumberPad];
-        [_repeatPinField setBackgroundColor:[UIColor whiteColor]];
-        
-        [dialog show];
-        
-        [_pinField becomeFirstResponder];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            UIAlertView* dialog = [[UIAlertView alloc] initWithTitle:@"Enter New Pin" message:@"please enter password" delegate:(id)self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+            dialog.tag = kEnterNewPinAlert;
+            dialog.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+            _pinField = [dialog textFieldAtIndex:0];
+            [_pinField setPlaceholder:@"Enter PIN"];
+            [_pinField setSecureTextEntry: YES];
+            [_pinField setKeyboardType:UIKeyboardTypeNumberPad];
+            [_pinField setBackgroundColor:[UIColor whiteColor]];
+            
+            _repeatPinField = [dialog textFieldAtIndex:1];
+            [_repeatPinField setPlaceholder:@"Repeat PIN"];
+            [_repeatPinField setSecureTextEntry: YES];
+            [_repeatPinField setKeyboardType:UIKeyboardTypeNumberPad];
+            [_repeatPinField setBackgroundColor:[UIColor whiteColor]];
+            
+            [dialog show];
+            
+            [_pinField becomeFirstResponder];
+            });
     }
-    //pin already set
     else
     {
+        dispatch_async(dispatch_get_main_queue(), ^{
+        
         UIAlertView* dialog = [[UIAlertView alloc] initWithTitle:@"Enter Pin" message:nil delegate:(id)self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
         dialog.tag = kEnterExistingPinAlert;
         dialog.alertViewStyle = UIAlertViewStyleSecureTextInput;
@@ -162,12 +191,17 @@
         //[_pinField setSecureTextEntry: YES];
         [_pinField setKeyboardType:UIKeyboardTypeNumberPad];
         [_pinField setBackgroundColor:[UIColor whiteColor]];
-       // [dialog addSubview:_pinField];
+        // [dialog addSubview:_pinField];
         
         [dialog show];
         
         [_pinField becomeFirstResponder];
-    }
+    
+                       //pin already set
+    
+        });
+        }
+
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -183,21 +217,7 @@
         //pin number entered was correct
         if([_pinField.text isEqualToString: [_pinWrapper objectForKey:(__bridge id)(kSecValueData)]])
         {
-            KeychainItemWrapper *secureDataKeychain = [[KeychainItemWrapper alloc] initWithIdentifier:@"com.chefspecialapp.keychain.securedData" accessGroup:nil];
-            NSString *secureDataString = [secureDataKeychain objectForKey:(__bridge id)(kSecValueData)];
-            
-            //we have stored data for this keychain
-            if([secureDataString length] != 0)
-            {
-                
-                NSLog(@"Got Access");
-                return;
-            }
-            
-            else
-            {
-                NSLog(@"No keychain data stored yet");
-            }
+            return;
         }
         //pin entered was incorrect
         else
@@ -256,7 +276,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    [[self cdh] iCloudAccountIsSignedIn];
+    //[[self cdh] iCloudAccountIsSignedIn];
+    [self canEvaluatePolicy];
+    //[[SKPaymentQueue defaultQueue] addTransactionObserver:self];
+    
     return YES;
 }
 
@@ -271,14 +294,32 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [self canEvaluatePolicy];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    [self canEvaluatePolicy];
+    
+    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
    [[self cdh] backgroundSaveContext];
+}
+#pragma mark - store kit observer delegate
+- (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions {
+    for (SKPaymentTransaction *transaction in transactions) {
+        if (transaction.transactionState == SKPaymentTransactionStatePurchased || transaction.transactionState == SKPaymentTransactionStateRestored) {
+            SKPayment *payment = transaction.payment;
+            if ([payment.productIdentifier isEqualToString:@"proVersion"]) {
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"purchasedPro"];
+                [queue finishTransaction:transaction];
+            }
+        }
+        else if (transaction.transactionState == SKPaymentTransactionStateFailed) {
+            NSLog(@"transaction failed");
+            [queue finishTransaction:transaction];
+        }
+    }
 }
 @end

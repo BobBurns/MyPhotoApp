@@ -16,7 +16,11 @@
 @property (nonatomic, retain) UIAlertView *deleteAlertView;
 @property (nonatomic, strong) UIImage *displayPhoto;
 @property (nonatomic, strong) NSDate *displayDate;
+@property (nonatomic, strong) NSString *displayPhotoFilename;
 @property (strong, nonatomic) IBOutlet UIScrollView *photoScrollView;
+@property (strong, nonatomic) IBOutlet UIView *videoContainerView;
+@property (strong, nonatomic) NSURL *videoURL;
+@property BOOL isVideo;
 
 - (IBAction)handleDeletePhoto:(id)sender;
 
