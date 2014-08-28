@@ -24,4 +24,9 @@
 
 - (IBAction)handleDeletePhoto:(id)sender;
 
+@property (strong, nonatomic) IBOutlet UIButton *handleExportPhoto;
+- (IBAction)handleExportButton:(id)sender;
+- (IBAction)handleTrashBarButton:(id)sender;
+- (IBAction)handleExportBarButton:(id)sender;
+
 @end

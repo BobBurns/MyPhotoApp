@@ -14,6 +14,7 @@
 @import CoreData;
 @import AVFoundation;
 @import AVKit;
+@import Photos;
 
 
 #define debug 1
@@ -113,16 +114,7 @@
 #pragma mark - Trash Button
 
 - (IBAction)handleDeletePhoto:(id)sender {
-    if (debug == 1) {
-        NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
-    }
     
-    self.deleteAlertView = [[UIAlertView alloc] initWithTitle:@"Delete Photo?"
-                                                      message:@"Are you sure you want to delete this photo?"
-                                                     delegate:self
-                                            cancelButtonTitle:@"Cancel"
-                                            otherButtonTitles:@"Delete", nil];
-    [self.deleteAlertView show];
     
 }
 - (void)dealloc {
@@ -136,40 +128,111 @@
     }
     if (alertView == self.deleteAlertView) {
         if (buttonIndex == 1) {
-            NSError *error;
-            NSString *path = [[self applicationSupportDirectoryPath] stringByAppendingPathComponent:self.displayPhotoFilename];
-            [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
-            NSLog(@"remove item error: %@", error);
-            
-            CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
-            
-            Photos *photoToDelete = (Photos *)[cdh.context objectWithID:self.photoID];
-            if ([photoToDelete.isVideo boolValue]) {
-                NSError *error;
-                //NSURL *URLtoDelete = [NSURL URLWithString:photoToDelete.fileName];
-                NSFileManager *fm = [NSFileManager defaultManager];
-                [fm removeItemAtPath:photoToDelete.fileName error:&error];
-                if (error) {
-                    NSLog(@"error deleting video: %@ '%@'", error, error.description);
-                }
-            }
-            if (![self.photoID isTemporaryID]) {
-                NSLog(@"attempting to delte object with tempID");
-                
-            } else {
-                NSLog(@"Couldn't delete Temp ID");
-            }
-            [cdh.context deleteObject:photoToDelete];
-            [cdh backgroundSaveContext];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
-                                                                object:nil];
-            NSLog(@"Photo Deleted");
-            [[self navigationController] popViewControllerAnimated:YES];
+            [self deletePhoto];
             
         } else {
             NSLog(@"Cancled Delete");
         }
+    } else if (alertView.tag == 2001) {
+        if (buttonIndex == 1) {
+            [self exportPhoto];
+        } else {
+            NSLog(@"Canceled Export");
+        }
     }
+}
+
+- (IBAction)handleExportButton:(id)sender {
+}
+
+- (IBAction)handleTrashBarButton:(id)sender {
+    if (debug == 1) {
+        NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
+    }
+    
+    self.deleteAlertView = [[UIAlertView alloc] initWithTitle:@"Delete Photo?"
+                                                      message:@"Are you sure you want to delete this photo?"
+                                                     delegate:self
+                                            cancelButtonTitle:@"Cancel"
+                                            otherButtonTitles:@"Delete", nil];
+    [self.deleteAlertView show];
+}
+
+- (IBAction)handleExportBarButton:(id)sender {
+    if (debug == 1) {
+        NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Export Photo?"
+                                                      message:@"Are you sure you want to export this photo?"
+                                                     delegate:self
+                                            cancelButtonTitle:@"Cancel"
+                                            otherButtonTitles:@"Export", nil];
+    alert.tag = 2001;
+    [alert show];
+    
+}
+- (void)deletePhoto {
+    NSError *error;
+    NSString *path = [[self applicationSupportDirectoryPath] stringByAppendingPathComponent:self.displayPhotoFilename];
+    [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
+    NSLog(@"remove item error: %@", error);
+    
+    CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
+    
+    Photos *photoToDelete = (Photos *)[cdh.context objectWithID:self.photoID];
+    if ([photoToDelete.isVideo boolValue]) {
+        NSError *error;
+        //NSURL *URLtoDelete = [NSURL URLWithString:photoToDelete.fileName];
+        NSFileManager *fm = [NSFileManager defaultManager];
+        [fm removeItemAtURL:self.videoURL error:&error];
+        if (error) {
+            NSLog(@"error deleting video: %@ '%@'", error, error.description);
+        }
+    }
+    if (![self.photoID isTemporaryID]) {
+        NSLog(@"attempting to delte object with tempID");
+        
+    } else {
+        NSLog(@"Couldn't delete Temp ID");
+    }
+    [cdh.context deleteObject:photoToDelete];
+    [cdh backgroundSaveContext];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
+                                                        object:nil];
+    NSLog(@"Photo Deleted");
+    [[self navigationController] popViewControllerAnimated:YES];
+}
+
+- (void)exportPhoto {
+    CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
+    Photos *photoToExport = (Photos *)[cdh.context objectWithID:self.photoID];
+    __block BOOL exportVideo = photoToExport.isVideo.boolValue;
+    __block NSURL *videoURL = self.videoURL;
+    
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+        PHAssetChangeRequest *assetChangeRequest = nil;
+        
+        if (exportVideo) {
+            assetChangeRequest = [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:videoURL];
+        } else {
+            assetChangeRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:self.displayPhoto];
+        }
+        PHAssetCollectionChangeRequest *assetCollectionChangeRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:nil];
+        
+        [assetCollectionChangeRequest addAssets:@[[assetChangeRequest placeholderForCreatedAsset]]];
+    } completionHandler:^(BOOL success, NSError *error) {
+        if (!success) {
+            NSLog(@"Error creating asset: %@", error);
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Export Successful" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+                [alert show];
+                
+                // [[self navigationController] popViewControllerAnimated:YES];
+            });
+        }
+    }];
 }
 @end

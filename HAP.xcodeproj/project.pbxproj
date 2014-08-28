@@ -19,8 +19,8 @@
 		3C67D6DD19846BF40043213D /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C67D6DC19846BF40043213D /* AssetsLibrary.framework */; };
 		3C76786F19A1775E0039D18A /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C76786E19A1775E0039D18A /* KeychainItemWrapper.m */; };
 		3C76787119A177A30039D18A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C76787019A177A30039D18A /* Security.framework */; };
+		3C89063419AFA01900B3D903 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C89063319AFA01900B3D903 /* StoreKit.framework */; };
 		3C94B04D19A52DE00027201A /* CDFolderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C94B04C19A52DE00027201A /* CDFolderTableViewController.m */; };
-		3CA1D99C19AD6F44004FA2A6 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CA1D99B19AD6F44004FA2A6 /* StoreKit.framework */; };
 		3CA1D9BD19AE6706004FA2A6 /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CA1D9BC19AE6706004FA2A6 /* Icon-76.png */; };
 		3CAEBE3E1983457800E4002C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE3D1983457800E4002C /* main.m */; };
 		3CAEBE411983457800E4002C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE401983457800E4002C /* AppDelegate.m */; };
@@ -64,22 +64,21 @@
 		3C4DB74819ACFD9C001CFD4E /* Photos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photos.h; sourceTree = "<group>"; };
 		3C4DB74919ACFD9C001CFD4E /* Photos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photos.m; sourceTree = "<group>"; };
 		3C4DB74B19AD05FF001CFD4E /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
-		3C6299611991A3B300AAB9B6 /* MyPhotoLibrary.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MyPhotoLibrary.entitlements; sourceTree = "<group>"; };
 		3C67D6DC19846BF40043213D /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		3C76786D19A1775E0039D18A /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItemWrapper.h; sourceTree = "<group>"; };
 		3C76786E19A1775E0039D18A /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainItemWrapper.m; sourceTree = "<group>"; };
 		3C76787019A177A30039D18A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		3C89063319AFA01900B3D903 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		3C94B04B19A52DE00027201A /* CDFolderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDFolderTableViewController.h; sourceTree = "<group>"; };
 		3C94B04C19A52DE00027201A /* CDFolderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDFolderTableViewController.m; sourceTree = "<group>"; };
-		3CA1D99B19AD6F44004FA2A6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		3CA1D9BC19AE6706004FA2A6 /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
-		3CAEBE381983457800E4002C /* MyPhotoLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPhotoLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CAEBE381983457800E4002C /* HAP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HAP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CAEBE3C1983457800E4002C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3CAEBE3D1983457800E4002C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3CAEBE3F1983457800E4002C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3CAEBE401983457800E4002C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		3CAEBE481983457800E4002C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		3CAEBE4E1983457800E4002C /* MyPhotoLibraryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyPhotoLibraryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CAEBE4E1983457800E4002C /* HAPTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HAPTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CAEBE531983457800E4002C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3CAEBE541983457800E4002C /* MyPhotoLibraryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyPhotoLibraryTests.m; sourceTree = "<group>"; };
 		3CAEBE5E198345C700E4002C /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
@@ -106,7 +105,7 @@
 				3C4DB74C19AD05FF001CFD4E /* AVKit.framework in Frameworks */,
 				3C76787119A177A30039D18A /* Security.framework in Frameworks */,
 				3CFA3CA21989BAFC005224F2 /* CoreGraphics.framework in Frameworks */,
-				3CA1D99C19AD6F44004FA2A6 /* StoreKit.framework in Frameworks */,
+				3C89063419AFA01900B3D903 /* StoreKit.framework in Frameworks */,
 				3C064F8B19885DD0003BA399 /* CoreData.framework in Frameworks */,
 				3C67D6DD19846BF40043213D /* AssetsLibrary.framework in Frameworks */,
 			);
@@ -157,7 +156,7 @@
 		3CAEBE2F1983457700E4002C = {
 			isa = PBXGroup;
 			children = (
-				3CA1D99B19AD6F44004FA2A6 /* StoreKit.framework */,
+				3C89063319AFA01900B3D903 /* StoreKit.framework */,
 				3C4DB74B19AD05FF001CFD4E /* AVKit.framework */,
 				3C76787019A177A30039D18A /* Security.framework */,
 				3CFA3CA11989BAFC005224F2 /* CoreGraphics.framework */,
@@ -173,8 +172,8 @@
 		3CAEBE391983457800E4002C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3CAEBE381983457800E4002C /* MyPhotoLibrary.app */,
-				3CAEBE4E1983457800E4002C /* MyPhotoLibraryTests.xctest */,
+				3CAEBE381983457800E4002C /* HAP.app */,
+				3CAEBE4E1983457800E4002C /* HAPTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -184,7 +183,6 @@
 			children = (
 				3CA1D9BC19AE6706004FA2A6 /* Icon-76.png */,
 				3C208B1D199B0EDB00BA9F68 /* PHAssetViewControllers */,
-				3C6299611991A3B300AAB9B6 /* MyPhotoLibrary.entitlements */,
 				3CFA3CA31989C1D8005224F2 /* CoreData ViewControllers */,
 				3CFA3C9D19896451005224F2 /* Other */,
 				3C064F8D19885E2C003BA399 /* Core Data Classes */,
@@ -252,9 +250,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3CAEBE371983457800E4002C /* MyPhotoLibrary */ = {
+		3CAEBE371983457800E4002C /* HAP */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3CAEBE581983457800E4002C /* Build configuration list for PBXNativeTarget "MyPhotoLibrary" */;
+			buildConfigurationList = 3CAEBE581983457800E4002C /* Build configuration list for PBXNativeTarget "HAP" */;
 			buildPhases = (
 				3CAEBE341983457800E4002C /* Sources */,
 				3CAEBE351983457800E4002C /* Frameworks */,
@@ -264,14 +262,14 @@
 			);
 			dependencies = (
 			);
-			name = MyPhotoLibrary;
+			name = HAP;
 			productName = MyPhotoLibrary;
-			productReference = 3CAEBE381983457800E4002C /* MyPhotoLibrary.app */;
+			productReference = 3CAEBE381983457800E4002C /* HAP.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3CAEBE4D1983457800E4002C /* MyPhotoLibraryTests */ = {
+		3CAEBE4D1983457800E4002C /* HAPTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3CAEBE5B1983457800E4002C /* Build configuration list for PBXNativeTarget "MyPhotoLibraryTests" */;
+			buildConfigurationList = 3CAEBE5B1983457800E4002C /* Build configuration list for PBXNativeTarget "HAPTests" */;
 			buildPhases = (
 				3CAEBE4A1983457800E4002C /* Sources */,
 				3CAEBE4B1983457800E4002C /* Frameworks */,
@@ -282,9 +280,9 @@
 			dependencies = (
 				3CAEBE501983457800E4002C /* PBXTargetDependency */,
 			);
-			name = MyPhotoLibraryTests;
+			name = HAPTests;
 			productName = MyPhotoLibraryTests;
-			productReference = 3CAEBE4E1983457800E4002C /* MyPhotoLibraryTests.xctest */;
+			productReference = 3CAEBE4E1983457800E4002C /* HAPTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -317,7 +315,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 3CAEBE331983457800E4002C /* Build configuration list for PBXProject "MyPhotoLibrary" */;
+			buildConfigurationList = 3CAEBE331983457800E4002C /* Build configuration list for PBXProject "HAP" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -330,8 +328,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3CAEBE371983457800E4002C /* MyPhotoLibrary */,
-				3CAEBE4D1983457800E4002C /* MyPhotoLibraryTests */,
+				3CAEBE371983457800E4002C /* HAP */,
+				3CAEBE4D1983457800E4002C /* HAPTests */,
 			);
 		};
 /* End PBXProject section */
@@ -394,7 +392,7 @@
 /* Begin PBXTargetDependency section */
 		3CAEBE501983457800E4002C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3CAEBE371983457800E4002C /* MyPhotoLibrary */;
+			target = 3CAEBE371983457800E4002C /* HAP */;
 			targetProxy = 3CAEBE4F1983457800E4002C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -487,7 +485,7 @@
 				INFOPLIST_FILE = MyPhotoLibrary/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = MyPhotoLibrary;
+				PRODUCT_NAME = HAP;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MyPhotoLibrary/MyPhotoLibrary-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -506,7 +504,7 @@
 				INFOPLIST_FILE = MyPhotoLibrary/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = MyPhotoLibrary;
+				PRODUCT_NAME = HAP;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MyPhotoLibrary/MyPhotoLibrary-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -527,7 +525,7 @@
 				);
 				INFOPLIST_FILE = MyPhotoLibraryTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = MyPhotoLibraryTests;
+				PRODUCT_NAME = HAPTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
@@ -542,7 +540,7 @@
 				);
 				INFOPLIST_FILE = MyPhotoLibraryTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = MyPhotoLibraryTests;
+				PRODUCT_NAME = HAPTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
@@ -550,7 +548,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3CAEBE331983457800E4002C /* Build configuration list for PBXProject "MyPhotoLibrary" */ = {
+		3CAEBE331983457800E4002C /* Build configuration list for PBXProject "HAP" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3CAEBE561983457800E4002C /* Debug */,
@@ -559,7 +557,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3CAEBE581983457800E4002C /* Build configuration list for PBXNativeTarget "MyPhotoLibrary" */ = {
+		3CAEBE581983457800E4002C /* Build configuration list for PBXNativeTarget "HAP" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3CAEBE591983457800E4002C /* Debug */,
@@ -568,7 +566,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3CAEBE5B1983457800E4002C /* Build configuration list for PBXNativeTarget "MyPhotoLibraryTests" */ = {
+		3CAEBE5B1983457800E4002C /* Build configuration list for PBXNativeTarget "HAPTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3CAEBE5C1983457800E4002C /* Debug */,

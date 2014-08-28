@@ -415,7 +415,8 @@ static CGSize AssetGridThumbnailSize;
         FullSize *fullsize = [NSEntityDescription insertNewObjectForEntityForName:@"FullSize" inManagedObjectContext:cdh.context];
         
         if (asset.mediaType == PHAssetMediaTypeVideo) {
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"purchasedPro"] == NO) {
+            // when itunes IAP is set up [[NSUserDefaults standardUserDefaults] boolForKey:@"purchasedPro"] == NO
+            if (proVersion == 0) {
                 NSLog(@"Asset is video");
                 [self allowVideoImport];
                 return;
@@ -471,7 +472,7 @@ static CGSize AssetGridThumbnailSize;
         
             
         } else {
-            CGSize size = CGSizeMake(400.0, 400.0);
+            CGSize size = self.view.bounds.size;
             
             /*
              __block NSData *imageData;
