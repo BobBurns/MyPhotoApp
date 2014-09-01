@@ -9,6 +9,7 @@
 #import "FetchGroupCollectionVC.h"
 #import "CDDetailViewController.h"
 #import "LibraryRootViewController.h"
+#import "CDFullCollectViewController.h"
 
 #import "AppDelegate.h"
 #import "CoreDataHelper.h"
@@ -204,7 +205,13 @@ static NSString * const reuseIdentifier = @"Cell";
         NSLog(@"running %@ '%@'", self.class , NSStringFromSelector(_cmd));
     }
 
-    
+    if ([segue.identifier isEqualToString:@"showFull"]) {
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:sender];
+        
+        CDFullCollectViewController *fullVC = segue.destinationViewController;
+        fullVC.folderName = self.folderName;
+        fullVC.startIndex = indexPath;
+    }
 
     if ([segue.identifier isEqualToString:@"showPhoto"]) {
         //CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];

@@ -21,11 +21,15 @@
 		3C76787119A177A30039D18A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C76787019A177A30039D18A /* Security.framework */; };
 		3C89063419AFA01900B3D903 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C89063319AFA01900B3D903 /* StoreKit.framework */; };
 		3C94B04D19A52DE00027201A /* CDFolderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C94B04C19A52DE00027201A /* CDFolderTableViewController.m */; };
+		3C9A234B19B3F72E00A35166 /* GreyPlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9A234A19B3F72E00A35166 /* GreyPlay.png */; };
 		3CA1D9BD19AE6706004FA2A6 /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CA1D9BC19AE6706004FA2A6 /* Icon-76.png */; };
+		3CA8EFE219B296BC0005B65E /* CDContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA8EFE119B296BC0005B65E /* CDContainerViewController.m */; };
 		3CAEBE3E1983457800E4002C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE3D1983457800E4002C /* main.m */; };
 		3CAEBE411983457800E4002C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE401983457800E4002C /* AppDelegate.m */; };
 		3CAEBE491983457800E4002C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CAEBE481983457800E4002C /* Images.xcassets */; };
 		3CAEBE551983457800E4002C /* MyPhotoLibraryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE541983457800E4002C /* MyPhotoLibraryTests.m */; };
+		3CCB049319B14B5C003DCD6B /* CDFullCollectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCB049219B14B5C003DCD6B /* CDFullCollectViewController.m */; };
+		3CCB049619B14DA5003DCD6B /* CDFullCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCB049519B14DA5003DCD6B /* CDFullCollectionViewCell.m */; };
 		3CCEB94C1993DA6C002920EC /* Faulter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCEB94B1993DA6C002920EC /* Faulter.m */; };
 		3CD287B9199BE50600502FC9 /* SelectPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD287B8199BE50600502FC9 /* SelectPhotoViewController.m */; };
 		3CE67EE919A3F46700E94CAA /* CDMainVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE67EE819A3F46700E94CAA /* CDMainVC.m */; };
@@ -71,7 +75,10 @@
 		3C89063319AFA01900B3D903 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		3C94B04B19A52DE00027201A /* CDFolderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDFolderTableViewController.h; sourceTree = "<group>"; };
 		3C94B04C19A52DE00027201A /* CDFolderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDFolderTableViewController.m; sourceTree = "<group>"; };
+		3C9A234A19B3F72E00A35166 /* GreyPlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GreyPlay.png; sourceTree = "<group>"; };
 		3CA1D9BC19AE6706004FA2A6 /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
+		3CA8EFE019B296BC0005B65E /* CDContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDContainerViewController.h; sourceTree = "<group>"; };
+		3CA8EFE119B296BC0005B65E /* CDContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDContainerViewController.m; sourceTree = "<group>"; };
 		3CAEBE381983457800E4002C /* HAP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HAP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CAEBE3C1983457800E4002C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3CAEBE3D1983457800E4002C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -82,6 +89,10 @@
 		3CAEBE531983457800E4002C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3CAEBE541983457800E4002C /* MyPhotoLibraryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyPhotoLibraryTests.m; sourceTree = "<group>"; };
 		3CAEBE5E198345C700E4002C /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		3CCB049119B14B5C003DCD6B /* CDFullCollectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDFullCollectViewController.h; sourceTree = "<group>"; };
+		3CCB049219B14B5C003DCD6B /* CDFullCollectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDFullCollectViewController.m; sourceTree = "<group>"; };
+		3CCB049419B14DA5003DCD6B /* CDFullCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDFullCollectionViewCell.h; sourceTree = "<group>"; };
+		3CCB049519B14DA5003DCD6B /* CDFullCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDFullCollectionViewCell.m; sourceTree = "<group>"; };
 		3CCEB94A1993DA6C002920EC /* Faulter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Faulter.h; sourceTree = "<group>"; };
 		3CCEB94B1993DA6C002920EC /* Faulter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Faulter.m; sourceTree = "<group>"; };
 		3CD287B7199BE50600502FC9 /* SelectPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectPhotoViewController.h; sourceTree = "<group>"; };
@@ -188,6 +199,7 @@
 				3C064F8D19885E2C003BA399 /* Core Data Classes */,
 				3CAEBE3F1983457800E4002C /* AppDelegate.h */,
 				3CAEBE401983457800E4002C /* AppDelegate.m */,
+				3C9A234A19B3F72E00A35166 /* GreyPlay.png */,
 				3CAEBE481983457800E4002C /* Images.xcassets */,
 				3CE67EEA19A3F4FF00E94CAA /* Main.storyboard */,
 				3CAEBE3B1983457800E4002C /* Supporting Files */,
@@ -243,6 +255,12 @@
 				3CE67EE819A3F46700E94CAA /* CDMainVC.m */,
 				3C94B04B19A52DE00027201A /* CDFolderTableViewController.h */,
 				3C94B04C19A52DE00027201A /* CDFolderTableViewController.m */,
+				3CCB049119B14B5C003DCD6B /* CDFullCollectViewController.h */,
+				3CCB049219B14B5C003DCD6B /* CDFullCollectViewController.m */,
+				3CCB049419B14DA5003DCD6B /* CDFullCollectionViewCell.h */,
+				3CCB049519B14DA5003DCD6B /* CDFullCollectionViewCell.m */,
+				3CA8EFE019B296BC0005B65E /* CDContainerViewController.h */,
+				3CA8EFE119B296BC0005B65E /* CDContainerViewController.m */,
 			);
 			name = "CoreData ViewControllers";
 			sourceTree = "<group>";
@@ -339,6 +357,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C9A234B19B3F72E00A35166 /* GreyPlay.png in Resources */,
 				3CAEBE491983457800E4002C /* Images.xcassets in Resources */,
 				3CE67EEB19A3F4FF00E94CAA /* Main.storyboard in Resources */,
 				3CA1D9BD19AE6706004FA2A6 /* Icon-76.png in Resources */,
@@ -367,15 +386,18 @@
 				3CE89FF319A697E000D381A4 /* Folders.m in Sources */,
 				3C2119CC199D377D002533B1 /* FetchGroupCollectionVC.m in Sources */,
 				3CE67EE919A3F46700E94CAA /* CDMainVC.m in Sources */,
+				3CCB049619B14DA5003DCD6B /* CDFullCollectionViewCell.m in Sources */,
 				3C208B20199B0FF600BA9F68 /* LibraryRootViewController.m in Sources */,
 				3C4DB74A19ACFD9C001CFD4E /* Photos.m in Sources */,
 				3CCEB94C1993DA6C002920EC /* Faulter.m in Sources */,
+				3CCB049319B14B5C003DCD6B /* CDFullCollectViewController.m in Sources */,
 				3C94B04D19A52DE00027201A /* CDFolderTableViewController.m in Sources */,
 				3CAEBE3E1983457800E4002C /* main.m in Sources */,
 				3CD287B9199BE50600502FC9 /* SelectPhotoViewController.m in Sources */,
 				3C76786F19A1775E0039D18A /* KeychainItemWrapper.m in Sources */,
 				3C337642199C4D55001029A8 /* CDGroupCell.m in Sources */,
 				3C064F9019885EDB003BA399 /* CoreDataHelper.m in Sources */,
+				3CA8EFE219B296BC0005B65E /* CDContainerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

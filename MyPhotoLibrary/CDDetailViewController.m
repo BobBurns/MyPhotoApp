@@ -173,11 +173,6 @@
     
 }
 - (void)deletePhoto {
-    NSError *error;
-    NSString *path = [[self applicationSupportDirectoryPath] stringByAppendingPathComponent:self.displayPhotoFilename];
-    [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
-    NSLog(@"remove item error: %@", error);
-    
     CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
     
     Photos *photoToDelete = (Photos *)[cdh.context objectWithID:self.photoID];
