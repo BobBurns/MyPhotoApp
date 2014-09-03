@@ -75,6 +75,31 @@
     if(alertView.tag == kEnterFolderName)
     {
         if (buttonIndex == 1) {
+            if ([self.folderTextField.text isEqualToString: @""]) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Title!" message:@"Please enter a name for your folder" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+                alert.tag = kEnterFolderName;
+                alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+                _folderTextField = [UITextField new];
+                _folderTextField = [alert textFieldAtIndex:0];
+                [alert show];
+                [_folderTextField becomeFirstResponder];
+                return;
+            }
+            for (Folders *folder in self.frc.fetchedObjects) {
+                if ([folder.name isEqualToString:_folderTextField.text]) {
+                    NSLog(@"Same Folder Name");
+                    UIAlertView *alreadyAlert = [[UIAlertView alloc] initWithTitle:@"Duplicate Folder" message:@"Please enter a different name" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+                    alreadyAlert.tag = kEnterFolderName;
+                    alreadyAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+                    _folderTextField = [UITextField new];
+                    _folderTextField = [alreadyAlert textFieldAtIndex:0];
+                    [alreadyAlert show];
+                    [_folderTextField becomeFirstResponder];
+                    return;
+                    
+                }
+            }
+            
             CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
             Folders *newFolderName = [NSEntityDescription insertNewObjectForEntityForName:@"Folders" inManagedObjectContext:cdh.context];
             newFolderName.name = _folderTextField.text;
@@ -260,7 +285,7 @@
         // Delete the row from the data source
         Folders *deletedTarget = [self.frc objectAtIndexPath:indexPath];
         // first delete BLOBS
-        //[self deleteBlobsWithFolderName:(NSString *)deletedTarget.name];
+        [self deleteBlobsWithFolderName:(NSString *)deletedTarget.name];
         [self.frc.managedObjectContext deleteObject:deletedTarget];
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
@@ -290,42 +315,38 @@
 
 - (void)deleteBlobsWithFolderName:(NSString *)name {
     
-    __block NSString *folderName = name;
+    NSString *folderName = name;
+    CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
     
-    // do all this on a background thread
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photos"];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,
-                                             (unsigned long)NULL), ^(void) {
-        CoreDataHelper *cdh = [(AppDelegate *)[[UIApplication sharedApplication] delegate] cdh];
-        
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photos"];
-        
-        request.sortDescriptors = [NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"photoAlbum"
-                                                                                          ascending:YES],
-                                   [NSSortDescriptor sortDescriptorWithKey:@"date"
-                                                                 ascending:YES],
-                                   nil];
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photoAlbum.name = %@", folderName];
-        [request setPredicate:predicate];
-        
-        NSError *error = nil;
-        NSArray *folderResults = [cdh.context executeFetchRequest:request error:&error];
-        if (!folderResults) {
-            NSLog(@"error fetching folders to delete. Error %@", error);
-        }
-        for (Photos *photo in folderResults) {
-            NSString *fileName = photo.fileName;
+    request.sortDescriptors = [NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"photoAlbum"
+                                                                                      ascending:YES],
+                               [NSSortDescriptor sortDescriptorWithKey:@"date"
+                                                             ascending:YES],
+                               nil];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photoAlbum.name = %@", folderName];
+    [request setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *folderResults = [cdh.context executeFetchRequest:request error:&error];
+    if (!folderResults) {
+        NSLog(@"error fetching folders to delete. Error %@", error);
+    }
+    for (Photos *photo in folderResults) {
+        NSString *fileName = photo.fileName;
+        if (photo.isVideo) {
             NSString *pathToDelete = [[self applicationSupportDirectoryPath] stringByAppendingPathComponent:fileName];
             [[NSFileManager defaultManager] removeItemAtPath:pathToDelete error:&error];
             if (error) {
                 NSLog(@"error: %@", error);
             }
-            
         }
-        
-        
-    });
+    }
+    
+    
+    
 }
 
 #pragma mark - Navigation

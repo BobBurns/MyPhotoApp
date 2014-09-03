@@ -18,7 +18,6 @@
 #import "FullSize.h"
 
 #import "Faulter.h"
-#import "CDMainVC.h"
 
 #import "CDGroupCell.h"
 

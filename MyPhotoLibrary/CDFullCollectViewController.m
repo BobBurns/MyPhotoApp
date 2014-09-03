@@ -14,7 +14,6 @@
 #import "Folders.h"
 #import "CDFullCollectionViewCell.h"
 #import "Faulter.h"
-#import "CDContainerViewController.h"
 
 @import MediaPlayer;
 @import Photos;
@@ -26,9 +25,14 @@
 @property (nonatomic, strong) NSArray *resultsArray;
 @property (nonatomic, strong) MPMoviePlayerController *moviePlayer;
 @property (nonatomic) int currentIndex;
+@property (nonatomic, strong) UICollectionViewFlowLayout *flowLayout;
 @end
 
 @implementation CDFullCollectViewController
+
+- (BOOL)shouldAutorotate {
+    return YES; // trying to supress snapshotting mess
+}
 
 #pragma mark - utility file
 
@@ -48,12 +52,8 @@ static NSString *reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-    [flowLayout setMinimumInteritemSpacing:0.0f];
-    [flowLayout setMinimumLineSpacing:0.0f];
-    [self.collectionView setPagingEnabled:YES];
-    [self.collectionView setCollectionViewLayout:flowLayout];
+    _flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    [self updateSpacingForOrientation];
     
     // Do any additional setup after loading the view.
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -65,13 +65,20 @@ static NSString *reuseIdentifier = @"Cell";
 }
 - (void)viewDidAppear:(BOOL)animated {
     [self.collectionView scrollToItemAtIndexPath:self.startIndex
-                                atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+                                atScrollPosition:UICollectionViewScrollPositionLeft
                                         animated:NO];
     
     [self playMovieControllerWhenBackgroundIsTouhed];
 }
 - (void)viewWillAppear:(BOOL)animated {
     
+}
+- (void)viewWillDisappear:(BOOL)animated {
+    // make sure and get rid of movie player
+    
+    if (self.moviePlayer) {
+        [self.moviePlayer.view removeFromSuperview];
+    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -166,32 +173,99 @@ static NSString *reuseIdentifier = @"Cell";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return self.collectionView.frame.size;
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) {
+        return CGSizeMake(self.collectionView.frame.size.width - 60, self.collectionView.frame.size.height - 75);
+    } else {
+         return CGSizeMake(self.collectionView.frame.size.width, self.collectionView.frame.size.height - 75);
+    }
+}
+- (void)updateSpacingForOrientation {
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) {
+        [_flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+        _flowLayout.minimumLineSpacing = 60.0f;
+        _flowLayout.minimumInteritemSpacing = 0.0f;
+        _flowLayout.sectionInset = UIEdgeInsetsMake(0, 30, 0, 60);
+        [self.collectionView setPagingEnabled:YES];
+        [self.collectionView setCollectionViewLayout:_flowLayout];
+    } else {
+        [_flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+        [_flowLayout setMinimumInteritemSpacing:0.0f];
+        [_flowLayout setMinimumLineSpacing:0.0f];
+        _flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        //[_flowLayout setItemSize:CGSizeMake(320.0, 450.0)];
+        [self.collectionView setPagingEnabled:YES];
+        [self.collectionView setCollectionViewLayout:_flowLayout];
+    }
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    //[self.collectionView reloadData]; // trying to resolve snapshotting bug
 }
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [self.collectionView setAlpha:0.0f];
     
+    // Suppress the layout errors by invalidating the layout
     [self.collectionView.collectionViewLayout invalidateLayout];
+    
+    // Calculate the index of the item that the collectionView is currently displaying
     CGPoint currentOffset = [self.collectionView contentOffset];
     self.currentIndex = currentOffset.x / self.collectionView.frame.size.width;
+    /*
+    if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+        [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+        [flowLayout setMinimumInteritemSpacing:60.0f];
+        [flowLayout setMinimumLineSpacing:0.0f];
+        [flowLayout setItemSize:CGSizeMake(300.0, self.collectionView.frame.size.height - 75)];
+        [flowLayout setSectionInset:UIEdgeInsetsMake(0, 10 , 0, 10)];
+        [self.collectionView setPagingEnabled:YES];
+        [self.collectionView setCollectionViewLayout:flowLayout];
+    }
+    */
+    
+    
 }
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     // Force realignment of cell being displayed
     if (self.moviePlayer) {
         self.moviePlayer.view.frame = self.collectionView.frame;
-        return;
     }
+    //CGSize currentSize = self.collectionView.bounds.size;
+    //float offset = self.currentIndex * currentSize.width;
+    //[self.collectionView setContentOffset:CGPointMake(offset - 120, 0)];
+    [self updateSpacingForOrientation];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.currentIndex inSection:0];
+    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
+    [self.collectionView setAlpha:1.0f];
+    // Fade the collectionView back in
+    //[self.collectionView reloadData];
+}
+- (void)delayedView {
     CGSize currentSize = self.collectionView.bounds.size;
     float offset = self.currentIndex * currentSize.width;
     [self.collectionView setContentOffset:CGPointMake(offset, 0)];
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.currentIndex inSection:0];
-    
     [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
-    
+    // Fade the collectionView back in
     [UIView animateWithDuration:0.125f animations:^{
         [self.collectionView setAlpha:1.0f];
     }];
+    
+}
+- (void)delayAnimate {
+    [self.collectionView setAlpha:0.0f];
+    
+    // Suppress the layout errors by invalidating the layout
+    [self.collectionView.collectionViewLayout invalidateLayout];
+    
+    // Calculate the index of the item that the collectionView is currently displaying
+    CGPoint currentOffset = [self.collectionView contentOffset];
+    self.currentIndex = currentOffset.x / self.collectionView.frame.size.width;
+    [self.collectionView reloadData];
 }
 
 
@@ -222,6 +296,15 @@ static NSString *reuseIdentifier = @"Cell";
     [self.moviePlayer prepareToPlay];
     self.moviePlayer.view.frame = self.collectionView.frame;
     self.moviePlayer.backgroundView.backgroundColor = [UIColor whiteColor];
+    // add swipe to view
+    UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeInMovie:)];
+    swipe.direction = UISwipeGestureRecognizerDirectionRight;
+    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeInMovie:)];
+    swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+    
+    [self.moviePlayer.view addGestureRecognizer:swipe];
+    [self.moviePlayer.view addGestureRecognizer:swipeLeft];
+    
     //[self.view addSubview:self.moviePlayer.view];
     
     __block id observer = [[NSNotificationCenter defaultCenter] addObserverForName:MPMoviePlayerReadyForDisplayDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification *note)
@@ -232,6 +315,19 @@ static NSString *reuseIdentifier = @"Cell";
                                }
                            }];
     
+}
+
+- (void)handleSwipeInMovie:(id)sender{
+    if (!_moviePlayer) return;
+    
+    if ([self.moviePlayer playbackState] == MPMoviePlaybackStatePlaying) {
+        [self.moviePlayer stop];
+    }
+    [self.moviePlayer.view removeGestureRecognizer:sender];
+    
+    [self.moviePlayer.view removeFromSuperview];
+   // NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.currentIndex inSection:0];
+   // [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
 }
 #pragma mark - Navigation
 
@@ -250,9 +346,6 @@ static NSString *reuseIdentifier = @"Cell";
     Photos *showURl = [self.resultsArray objectAtIndex:[[self.collectionView indexPathForCell:sender] row]];
     if ([segue.identifier isEqualToString:@"showContainer"] && showURl.isVideo) {
         
-        NSString *path = [[self applicationSupportDirectoryPath] stringByAppendingPathComponent:showURl.fileName];
-        CDContainerViewController *containerVC = segue.destinationViewController;
-        containerVC.videoURL = [NSURL fileURLWithPath:path];
         
     }
     // Get the new view controller using [segue destinationViewController].
@@ -363,5 +456,10 @@ static NSString *reuseIdentifier = @"Cell";
                                                      otherButtonTitles:@"Export", nil];
     exportAlertView.tag = 3002;
     [exportAlertView show];
+}
+- (void)dealloc {
+    _moviePlayer = nil;
+    _resultsArray = nil;
+    
 }
 @end

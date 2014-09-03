@@ -23,7 +23,6 @@
 		3C94B04D19A52DE00027201A /* CDFolderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C94B04C19A52DE00027201A /* CDFolderTableViewController.m */; };
 		3C9A234B19B3F72E00A35166 /* GreyPlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9A234A19B3F72E00A35166 /* GreyPlay.png */; };
 		3CA1D9BD19AE6706004FA2A6 /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CA1D9BC19AE6706004FA2A6 /* Icon-76.png */; };
-		3CA8EFE219B296BC0005B65E /* CDContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA8EFE119B296BC0005B65E /* CDContainerViewController.m */; };
 		3CAEBE3E1983457800E4002C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE3D1983457800E4002C /* main.m */; };
 		3CAEBE411983457800E4002C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAEBE401983457800E4002C /* AppDelegate.m */; };
 		3CAEBE491983457800E4002C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CAEBE481983457800E4002C /* Images.xcassets */; };
@@ -32,7 +31,6 @@
 		3CCB049619B14DA5003DCD6B /* CDFullCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCB049519B14DA5003DCD6B /* CDFullCollectionViewCell.m */; };
 		3CCEB94C1993DA6C002920EC /* Faulter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCEB94B1993DA6C002920EC /* Faulter.m */; };
 		3CD287B9199BE50600502FC9 /* SelectPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD287B8199BE50600502FC9 /* SelectPhotoViewController.m */; };
-		3CE67EE919A3F46700E94CAA /* CDMainVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE67EE819A3F46700E94CAA /* CDMainVC.m */; };
 		3CE67EEB19A3F4FF00E94CAA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CE67EEA19A3F4FF00E94CAA /* Main.storyboard */; };
 		3CE89FF319A697E000D381A4 /* Folders.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE89FF219A697E000D381A4 /* Folders.m */; };
 		3CE89FF619A697E100D381A4 /* FullSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE89FF519A697E100D381A4 /* FullSize.m */; };
@@ -77,8 +75,6 @@
 		3C94B04C19A52DE00027201A /* CDFolderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDFolderTableViewController.m; sourceTree = "<group>"; };
 		3C9A234A19B3F72E00A35166 /* GreyPlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GreyPlay.png; sourceTree = "<group>"; };
 		3CA1D9BC19AE6706004FA2A6 /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
-		3CA8EFE019B296BC0005B65E /* CDContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDContainerViewController.h; sourceTree = "<group>"; };
-		3CA8EFE119B296BC0005B65E /* CDContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDContainerViewController.m; sourceTree = "<group>"; };
 		3CAEBE381983457800E4002C /* HAP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HAP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CAEBE3C1983457800E4002C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3CAEBE3D1983457800E4002C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -97,8 +93,6 @@
 		3CCEB94B1993DA6C002920EC /* Faulter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Faulter.m; sourceTree = "<group>"; };
 		3CD287B7199BE50600502FC9 /* SelectPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectPhotoViewController.h; sourceTree = "<group>"; };
 		3CD287B8199BE50600502FC9 /* SelectPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectPhotoViewController.m; sourceTree = "<group>"; };
-		3CE67EE719A3F46700E94CAA /* CDMainVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMainVC.h; sourceTree = "<group>"; };
-		3CE67EE819A3F46700E94CAA /* CDMainVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMainVC.m; sourceTree = "<group>"; };
 		3CE67EEA19A3F4FF00E94CAA /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3CE89FF119A697E000D381A4 /* Folders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Folders.h; path = ../Folders.h; sourceTree = "<group>"; };
 		3CE89FF219A697E000D381A4 /* Folders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Folders.m; path = ../Folders.m; sourceTree = "<group>"; };
@@ -154,12 +148,12 @@
 		3C208B1D199B0EDB00BA9F68 /* PHAssetViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				3C208B1E199B0FF600BA9F68 /* LibraryRootViewController.h */,
+				3C208B1F199B0FF600BA9F68 /* LibraryRootViewController.m */,
 				3CD287B7199BE50600502FC9 /* SelectPhotoViewController.h */,
 				3CD287B8199BE50600502FC9 /* SelectPhotoViewController.m */,
 				3C208B24199B114100BA9F68 /* GridCollectionViewCell.h */,
 				3C208B25199B114100BA9F68 /* GridCollectionViewCell.m */,
-				3C208B1E199B0FF600BA9F68 /* LibraryRootViewController.h */,
-				3C208B1F199B0FF600BA9F68 /* LibraryRootViewController.m */,
 			);
 			name = PHAssetViewControllers;
 			sourceTree = "<group>";
@@ -245,22 +239,18 @@
 		3CFA3CA31989C1D8005224F2 /* CoreData ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				3C337640199C4D55001029A8 /* CDGroupCell.h */,
-				3C337641199C4D55001029A8 /* CDGroupCell.m */,
-				3C2119CA199D377D002533B1 /* FetchGroupCollectionVC.h */,
-				3C2119CB199D377D002533B1 /* FetchGroupCollectionVC.m */,
-				3C2119CD199D4C39002533B1 /* CDDetailViewController.h */,
-				3C2119CE199D4C39002533B1 /* CDDetailViewController.m */,
-				3CE67EE719A3F46700E94CAA /* CDMainVC.h */,
-				3CE67EE819A3F46700E94CAA /* CDMainVC.m */,
 				3C94B04B19A52DE00027201A /* CDFolderTableViewController.h */,
 				3C94B04C19A52DE00027201A /* CDFolderTableViewController.m */,
+				3C2119CA199D377D002533B1 /* FetchGroupCollectionVC.h */,
+				3C2119CB199D377D002533B1 /* FetchGroupCollectionVC.m */,
+				3C337640199C4D55001029A8 /* CDGroupCell.h */,
+				3C337641199C4D55001029A8 /* CDGroupCell.m */,
+				3C2119CD199D4C39002533B1 /* CDDetailViewController.h */,
+				3C2119CE199D4C39002533B1 /* CDDetailViewController.m */,
 				3CCB049119B14B5C003DCD6B /* CDFullCollectViewController.h */,
 				3CCB049219B14B5C003DCD6B /* CDFullCollectViewController.m */,
 				3CCB049419B14DA5003DCD6B /* CDFullCollectionViewCell.h */,
 				3CCB049519B14DA5003DCD6B /* CDFullCollectionViewCell.m */,
-				3CA8EFE019B296BC0005B65E /* CDContainerViewController.h */,
-				3CA8EFE119B296BC0005B65E /* CDContainerViewController.m */,
 			);
 			name = "CoreData ViewControllers";
 			sourceTree = "<group>";
@@ -385,7 +375,6 @@
 				3CAEBE411983457800E4002C /* AppDelegate.m in Sources */,
 				3CE89FF319A697E000D381A4 /* Folders.m in Sources */,
 				3C2119CC199D377D002533B1 /* FetchGroupCollectionVC.m in Sources */,
-				3CE67EE919A3F46700E94CAA /* CDMainVC.m in Sources */,
 				3CCB049619B14DA5003DCD6B /* CDFullCollectionViewCell.m in Sources */,
 				3C208B20199B0FF600BA9F68 /* LibraryRootViewController.m in Sources */,
 				3C4DB74A19ACFD9C001CFD4E /* Photos.m in Sources */,
@@ -397,7 +386,6 @@
 				3C76786F19A1775E0039D18A /* KeychainItemWrapper.m in Sources */,
 				3C337642199C4D55001029A8 /* CDGroupCell.m in Sources */,
 				3C064F9019885EDB003BA399 /* CoreDataHelper.m in Sources */,
-				3CA8EFE219B296BC0005B65E /* CDContainerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
